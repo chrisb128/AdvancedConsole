@@ -1,0 +1,1 @@
+export const setServerId = (serverId) => ({ type: 'SERVER_SET_SERVERID', serverId: serverId });

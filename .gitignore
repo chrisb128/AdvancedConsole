@@ -1,0 +1,6 @@
+package-lock.json
+node_modules
+.idea
+.vscode
+plugin/AdvancedConsole/out
+plugin/AdvancedConsole/target

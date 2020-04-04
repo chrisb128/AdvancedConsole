@@ -32,7 +32,7 @@ const Server = () => {
     }
     
     return (
-        <div>
+        <div className={styles.app}>
             <div className={styles.listPane}>
                 <List/>
             </div>

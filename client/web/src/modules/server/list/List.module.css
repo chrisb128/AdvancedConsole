@@ -1,7 +1,41 @@
+.list {
+    border: 0;
+}
+
 .listItemEven {
     background-color: lightgray;
+    padding: 1em 0.5em;
+    text-align: left;
+    position: relative;
+    height: 2.5em;
 }
 
 .listItemOdd {
     background-color: white;
+    padding: 1em 0.5em;
+    text-align: left;
+    position: relative;
+    height: 2.5em;
+}
+
+.listActions {
+    position: absolute;
+    top: 0.5em;
+    right: 0.5em;
+    padding: .5em;
+}
+
+.listHost {
+    position: absolute;
+    top: 2em;
+    left: 0.5em;
+
+    font-size: small;
+    font-style: italic;
+}
+
+.listName {
+    position: absolute;
+    top: 0.5em;
+    left: 0.5em;
 }

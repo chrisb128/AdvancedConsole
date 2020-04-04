@@ -1,21 +1,29 @@
-export default class ApiService {
-    async callApi(query) {
-        return await 
-            fetch('/api?', { 
-                method: 'POST', 
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ query }) 
-            })
-            .then(response => response.json());
-    }
+class ApiService {
+  constructor(token) {
+    this.token = token;
+  }
 
-    async getServers() {
-        return await this.callApi('{ servers { _id name host status } }');
-    }
+  async callApi(query) {
+    const response = await 
+      fetch('/api/query?', { 
+        method: 'POST', 
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + this.token
+        },
+        body: JSON.stringify({ query }) 
+      });
+        
+    return response.json();
+  }
 
-    async getEvents(serverId) {
-        return await this.callApi('{ events(serverId:"' + serverId + '") { _id time type message } }')
-    }
+  async getServers() {
+    return this.callApi('{ servers { _id name host status users { uuid username } } }');
+  }
+
+  async getEvents(serverId) {
+    return this.callApi('{ events(serverId:"' + serverId + '") { _id time type message player { uuid username } } }')
+  }
 }
+
+export default ApiService;

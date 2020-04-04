@@ -1,6 +1,9 @@
 import React from 'react';
+import moment from 'moment';
 import { useSelector } from 'react-redux';
 import { selectList } from './reducer';
+
+import styles from './Events.module.css';
 
 const Events = () => {
 
@@ -12,27 +15,34 @@ const Events = () => {
             case 0: return 'None';
             case 1: return 'Startup';
             case 2: return 'Shutdown';
-            case 3: return 'Keep Alive';
-            case 4: return 'Player Join';
-            case 5: return 'Player Disconnect';
-            case 6: return 'Player Chat';            
+            case 3: return 'Player Join';
+            case 4: return 'Player Disconnect';
+            case 5: return 'Player Chat';
+            case 6: return 'Block Break';
+            case 7: return 'Block Place';
+            case 8: return 'World Load';
+            case 9: return 'World Save';
+            case 10: return 'World Unload';
+            case 11: return 'Chunk Load';
+            case 12: return 'Chunk Unload';
         }
     }
 
     return (
-        <table>
+        <div>
             {
                 list.map(item => {
                     return (
-                    <tr>
-                        <td>{item.time}</td>
-                        <td>{typeDescription(item.type)}</td>
-                        <td>{item.message}</td>
-                    </tr>
+                    <div className={styles.eventItem}>
+                        <span className={styles.eventTime}>{moment(item.time).format('ll LTS')}</span>
+                        <span className={styles.eventType}>{typeDescription(item.type)}</span>
+                        <span className={styles.eventPlayer}>{item.player && item.player.username} ({item.player && item.player.uuid})</span>
+                        <span className={styles.eventMessage}>{item.message}</span>
+                    </div>
                     );
                 })
             }
-        </table>
+        </div>
     )
 };
 

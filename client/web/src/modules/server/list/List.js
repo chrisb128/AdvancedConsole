@@ -19,37 +19,22 @@ const List = () => {
     }
 
     return (
-        <div>            
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>IP/Host</th>
-                        <th>Online</th>
-                        <th>Events</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    { loading 
-                    ? (
-                        <tr>
-                            <td colSpan="4"><em>loading servers...</em></td>
-                        </tr>
-                    )
-                    : (
-                        list.map((item, index) => {
-                            return (
-                                <tr key={index} className={rowClassName(index)}>
-                                    <td>{item.name}</td>
-                                    <td>{item.host}</td>
-                                    <td>{item.status}</td>
-                                    <td><button onClick={() => dispatch(setServerId(item._id))}>Events</button></td>
-                                </tr>
-                            );
-                        })
-                    )}
-                </tbody>
-            </table>
+        <div>
+            { loading 
+            ? (
+                <div><em>loading servers...</em></div>
+            )
+            : (
+                list.map((item, index) => {
+                    return (
+                        <div className={rowClassName(index)}>
+                            <span className={styles.listHost}>{item.host}</span>
+                            <span className={styles.listName}>{item.name}</span>
+                            <span className={styles.listActions}><button onClick={() => dispatch(setServerId(item._id))}>Events</button></span>
+                        </div>
+                    );
+                })
+            )}
         </div>
     );
 }

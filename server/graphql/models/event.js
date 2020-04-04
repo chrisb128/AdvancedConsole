@@ -6,7 +6,8 @@ const eventSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Server'
     },
-    type: Number,
+    player: { uuid: String, username: String },
+    type: { type: Number },
     time: Date,    
     message: String
 });

@@ -4,7 +4,9 @@ const Schema = mongoose.Schema;
 const serverSchema = new Schema({
     name: String,
     host: String,
-    status: String
+    status: String,
+    lastReportTime: Date,
+    users: [{ username: String, uuid: String }]
 });
 
 

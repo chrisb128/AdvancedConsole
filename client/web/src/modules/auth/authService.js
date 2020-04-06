@@ -13,7 +13,7 @@ export default class AuthService {
   }
 
   async login(userName, password) {
-    const response = await this.post('/api/auth/login', { userName, password });
+    const response = await this.post('/server/api/auth/login', { userName, password });
     console.log('auth:login', response);
     return response;
   }

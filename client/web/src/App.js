@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import Auth from './modules/auth/Auth';
 import Server from './modules/server/Server';
@@ -10,6 +10,10 @@ import './App.css';
 
 function App() {
 
+    useEffect(() => {
+      document.title = 'Advanced Console';
+    });
+    
     const authenticated = useSelector(selectAuthenticated);
     
     return (

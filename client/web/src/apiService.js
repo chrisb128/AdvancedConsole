@@ -5,7 +5,7 @@ class ApiService {
 
   async callApi(query) {
     const response = await 
-      fetch('/api/query?', { 
+      fetch('/server/api/query?', { 
         method: 'POST', 
         headers: {
             'Content-Type': 'application/json',

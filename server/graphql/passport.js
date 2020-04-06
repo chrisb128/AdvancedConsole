@@ -8,7 +8,7 @@ const opts = {};
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 opts.secretOrKey = config.jwtSecret;
 
-const configurePassport = passport => {
+module.exports = passport => {
   passport.use(
     new JwtStrategy(opts, (jwtPayload, done) => {
       User.findById(jwtPayload.id)
@@ -21,24 +21,4 @@ const configurePassport = passport => {
         .catch(err => console.log(err));
     })
   );
-};
-
-const signJwtToken = (userId, username, callback) => {
-  
-  const payload = {
-    id: userId,
-    username: username
-  };
-  // Sign token
-  jwt.sign(
-    payload,
-    config.jwtSecret, {
-      expiresIn: 31556926 // 1 year in seconds
-    },
-    (err, token) => {
-      callback(err, token);
-    }
-  );
-}
-
-module.exports = { signJwtToken, configurePassport };
+};;

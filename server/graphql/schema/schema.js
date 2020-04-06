@@ -4,8 +4,6 @@ const Server = require('../models/server');
 const Event = require('../models/event');
 const User = require('../models/user');
 
-const bcrypt = require('bcryptjs');
-
 const { 
   GraphQLObjectType,
   GraphQLString,
@@ -23,7 +21,7 @@ const UserType = new GraphQLObjectType({
     username: { type: new GraphQLNonNull(GraphQLString) },
     lastLoginDate: { type: new GraphQLNonNull(GraphQLDate) }
   })
-})
+});
 
 const PlayerType = new GraphQLObjectType({
   name: 'Player',
@@ -37,6 +35,7 @@ const ServerType = new GraphQLObjectType({
   name: 'Server',
   fields: () => ({
     _id: { type: GraphQLID },
+    uuid: { type: GraphQLString },
     name: { type: GraphQLString },
     host: { type: GraphQLString },
     status: { type: GraphQLString },
@@ -76,6 +75,15 @@ const RootQuery = new GraphQLObjectType({
         return User.find({});
       }
     },
+    serverByUuid: {
+      type: ServerType,
+      args: { 
+        uuid: { type: new GraphQLNonNull(GraphQLString) },
+      },
+      resolve(parent, args) {
+        return Server.findOne({ uuid: args.uuid });
+      }
+    },
     servers: {
       type: new GraphQLList(ServerType),
       args: {},
@@ -93,7 +101,6 @@ const RootQuery = new GraphQLObjectType({
   }
 });
 
-
 const PlayerInput = new GraphQLInputObjectType({
   name: 'PlayerInput',
   fields: () => ({
@@ -101,7 +108,6 @@ const PlayerInput = new GraphQLInputObjectType({
     uuid: { type: new GraphQLNonNull(GraphQLString) }
   })
 });
-
 
 const Mutation = new GraphQLObjectType({
   name: 'Mutation',
@@ -111,12 +117,14 @@ const Mutation = new GraphQLObjectType({
       args: {
         //GraphQLNonNull make these field required
         name: { type: new GraphQLNonNull(GraphQLString) },
-        host: { type: new GraphQLNonNull(GraphQLString) }
+        host: { type: new GraphQLNonNull(GraphQLString) },
+        uuid: { type: new GraphQLNonNull(GraphQLString) }
       },
       resolve(parent, args) {
         return Server.create({
           name: args.name,
           host: args.host,
+          uuid: args.uuid,
           status: '',
           time: Date.now(),
           users: []
@@ -156,32 +164,6 @@ const Mutation = new GraphQLObjectType({
           player: args.player,
           message: args.message,
           time: Date.now()
-        });
-      }
-    },
-    addUser: {
-      type: UserType,
-      args: {
-        username: { type: new GraphQLNonNull(GraphQLString) },
-        password: { type: new GraphQLNonNull(GraphQLString) }
-      },
-      resolve(parent, args) {
-        
-        return User.create({
-          username: args.username
-        }).then(user => {
-          return new Promise((res) =>  {
-              bcrypt.genSalt(10, (err, salt) => {
-                bcrypt.hash(args.password, salt, (err, hash) => {
-
-                  if (err) throw err;
-                  user.password = hash;
-                  user.save()
-                    .then(user => res(user));
-                });
-              });
-            }
-          );
         });
       }
     }

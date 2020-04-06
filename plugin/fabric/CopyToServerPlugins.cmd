@@ -1,0 +1,1 @@
+copy "out\artifacts\AdvancedConsole_jar\AdvancedConsole.jar" "..\..\..\server\local-paper-1.14.4\plugins"

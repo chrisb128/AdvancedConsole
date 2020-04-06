@@ -4,8 +4,14 @@ public enum EventType {
     None,
     Startup,
     Shutdown,
-    KeepAlive,
     PlayerJoin,
     PlayerDisconnect,
-    PlayerChat
+    PlayerChat,
+    BlockBreak,
+    BlockPlace,
+    WorldLoad,
+    WorldSave,
+    WorldUnload,
+    ChunkLoad,
+    ChunkUnload
 }

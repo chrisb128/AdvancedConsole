@@ -1,49 +1,42 @@
 import React from 'react';
-import moment from 'moment';
-import { useSelector } from 'react-redux';
-import { selectList } from './reducer';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectList, selectLoading } from './reducer';
 
-import styles from './Events.module.css';
+import Event from './event/Event';
+
+import { fetchNextEventsPage } from './actions';
 
 const Events = () => {
+  
+    const dispatch = useDispatch();
 
+    const loading = useSelector(selectLoading);
     const list = useSelector(selectList);
 
-    const typeDescription = (type) => {
-        switch(type) {
-            default:
-            case 0: return 'None';
-            case 1: return 'Startup';
-            case 2: return 'Shutdown';
-            case 3: return 'Player Join';
-            case 4: return 'Player Disconnect';
-            case 5: return 'Player Chat';
-            case 6: return 'Block Break';
-            case 7: return 'Block Place';
-            case 8: return 'World Load';
-            case 9: return 'World Save';
-            case 10: return 'World Unload';
-            case 11: return 'Chunk Load';
-            case 12: return 'Chunk Unload';
-        }
+    function onLoadMoreClicked(event) {
+      dispatch(fetchNextEventsPage());
+      event.preventDefault();
     }
 
     return (
+      <div>
+        <div>
+          Filter By Type: 
+        </div>
         <div>
             {
                 list.map(item => {
-                    return (
-                    <div className={styles.eventItem}>
-                        <span className={styles.eventTime}>{moment(item.time).format('ll LTS')}</span>
-                        <span className={styles.eventType}>{typeDescription(item.type)}</span>
-                        <span className={styles.eventPlayer}>{item.player && item.player.username} ({item.player && item.player.uuid})</span>
-                        <span className={styles.eventMessage}>{item.message}</span>
-                    </div>
-                    );
+                    return (<Event item={item}/>);
                 })
             }
+            {
+              loading
+              ? (<div>Loading ...</div>)
+              : (<div><button onClick={(event) => onLoadMoreClicked(event)}>Load More</button></div>)
+            }            
         </div>
-    )
+      </div>
+    );
 };
 
 export default Events;

@@ -7,6 +7,10 @@
   pointer-events: none;
 }
 
+.Auth {
+  border-bottom: 1px solid black;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-float infinite 3s ease-in-out;

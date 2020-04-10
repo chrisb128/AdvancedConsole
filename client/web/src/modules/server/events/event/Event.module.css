@@ -1,29 +1,19 @@
-.eventField {
-  width: 25%;
-}
 
 .eventTime {
-  position: absolute;
-  left: 0.5em;
-  
   text-align: left;
   font: smaller;
 }
 
 .eventType {
-  position: absolute;
-  left: 12em;
-  
   text-align:left;
 }
 
 .eventPlayer {
-  position: absolute;
-  left: 17em;
-
   text-align:left;
 }
 
-.eventItem {
-  position: relative;
+.eventMessage {
+  text-align:left;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }

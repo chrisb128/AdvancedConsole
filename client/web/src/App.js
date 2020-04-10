@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { Container, Row, Col } from 'react-bootstrap';
 import Auth from './modules/auth/Auth';
 import Server from './modules/server/Server';
 
@@ -17,10 +18,21 @@ function App() {
   const authenticated = useSelector(selectAuthenticated);
   
   return (
-    <div className="App">
-      <Auth/>   
-      { authenticated ? <Server/> : null }
-    </div>
+    <Container fluid className="App">
+      <Row className="Auth">
+        <Col>
+          <Auth/>
+        </Col>        
+      </Row>
+      <Row>
+        <Col>
+          { authenticated 
+            ? <Server/> 
+            : null 
+          }
+        </Col>
+      </Row>
+    </Container>
   );
 }
 

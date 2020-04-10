@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Row, Col } from 'react-bootstrap';
 import List from './list/List';
 import Events from './events/Events';
 
@@ -8,6 +9,7 @@ import { selectServerId, selectServerInfo } from './reducer';
 
 import styles from './Server.module.css';
 
+
 const Server = () => {
 
     const dispatch = useDispatch();
@@ -15,27 +17,31 @@ const Server = () => {
     const server = useSelector(selectServerInfo(serverId));
 
     useEffect(() => {
-        dispatch(fetchServers());
+      dispatch(fetchServers());
     }, [dispatch]);
 
     function mainContent() {
         if (!!serverId) {
             return (
-              <div>
-                <div className={styles.serverTitle}>
-                  <h2>{server.name}</h2>
-                </div>
-                <div className={styles.eventsList}>
-                    <Events/>
-                </div>
-                <div className={styles.serverPeople}>
-                  <ul>{
-                    server.users.map(user => {
-                      return (<li>{user.username}</li>);
-                    })
-                  }</ul>
-                </div>
-              </div>
+              <Row>
+                <Col>
+                  <Row>
+                    <Col xs={3}><h2>{server.name}</h2></Col>
+                    <Col>Users:
+                      <ul>{
+                        server.users.map(user => {
+                          return (<li>{user.username}</li>);
+                        })
+                      }</ul>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <Events/>
+                    </Col>
+                  </Row>
+                </Col>
+              </Row>
             );
         } else {
             return <p>Please select a server to view their events</p>;
@@ -43,14 +49,14 @@ const Server = () => {
     }
     
     return (
-        <div className={styles.app}>
-            <div className={styles.listPane}>
-                <List/>
-            </div>
-            <div className={styles.mainPane}>
-                {mainContent()}
-            </div>
-        </div>
+      <Row>
+        <Col xs={3} className={styles.list}>
+          <List/>
+        </Col>
+        <Col xs={9} className={styles.mainContent}>          
+          {mainContent()}
+        </Col>
+      </Row>
     );
 }
 

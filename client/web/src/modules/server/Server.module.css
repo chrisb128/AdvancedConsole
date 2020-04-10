@@ -1,17 +1,7 @@
-
-.app {
-    display:flex;
-    flex-wrap: wrap;
+.list {
+  border-right: 1px solid black;
 }
 
-.listPane {
-    display: inline-block;
-    border-right: 1px solid black;
-    width: 20%;
-    min-width: 20em;
-}
-
-.mainPane {
-    flex-grow: 1;
-    width: 50%;
+.mainContent {
+  padding: 1em;
 }

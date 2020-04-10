@@ -1,4 +1,5 @@
 import React from 'react';
+import { Row, Col } from 'react-bootstrap';
 import moment from 'moment';
 import styles from './Event.module.css';
 
@@ -26,12 +27,12 @@ const Event = (props) => {
   }
 
   return (
-    <div className={styles.eventItem}>
-      <span className={styles.eventTime}>{moment(item.time).format('ll LTS')}</span>
-      <span className={styles.eventType}>{typeDescription(item.type)}</span>
-      { item.player ? (<span className={styles.eventPlayer}>{item.player.username} ({item.player.uuid})</span>) : (null) }
-      <span className={styles.eventMessage}>{item.message}</span>
-    </div>
+    <Row>
+      <Col xs={2} className={styles.eventTime}>{moment(item.time).format('ll LTS')}</Col>
+      <Col xs={2} className={styles.eventType}>{typeDescription(item.type)}</Col>
+      <Col xs={2} className={styles.eventPlayer}>{item.player ? (<span tooltip={item.player.uuid}>{item.player.username}</span>) : (<em>No Player Data</em>)}</Col>
+      <Col xs={6} className={styles.eventMessage}>{item.message}</Col>
+    </Row>
   )
 };
 

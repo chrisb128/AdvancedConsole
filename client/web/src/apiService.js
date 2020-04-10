@@ -21,10 +21,15 @@ class ApiService {
     return this.callApi('{ servers { _id name host status lastReportTime users { uuid username } } }');
   }
 
-  async getEvents(serverId, limit, offset) {
+  async getEvents(serverId, limit, offset, types) {
     const eventsQuery = 
-      '{' 
-      + 'events(serverId:"' + serverId + '" limit:' + limit + ' offset:' + offset + ')' 
+      '{'
+      + 'events('
+        + 'serverId:"' + serverId + '" ' 
+        + 'limit:' + limit.toString() + ' '
+        + 'offset:' + offset.toString() + ' ' 
+        + 'filter: { types: [' + types.map(t => t.toString()).join(',') + '] } '
+      + ')' 
       + '{ _id time type message player { uuid username } }'
       +'}';
     return this.callApi(eventsQuery);

@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, ControlLabel, FormControl, FormGroup } from 'react-bootstrap';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+
 import { login } from '../actions';
 
 import styles from './Login.module.css';
-import { selectLoggingIn, selectAuthenticated, selectUserName, selectLoginError } from '../reducer';
+import { selectLoggingIn, selectLoginError } from '../reducer';
 
 const Login = () => {
     const dispatch = useDispatch();
 
     const loggingIn = useSelector(selectLoggingIn);
-    const authenticated = useSelector(selectAuthenticated);
-    const userName = useSelector(selectUserName);
     const loginError = useSelector(selectLoginError);
 
     const [email, setEmail] = useState("");
@@ -29,23 +29,23 @@ const Login = () => {
   function loginForm() {
     return (            
       <form onSubmit={handleSubmit}>
-        <FormGroup controlId="email" bsSize="large">
-        <ControlLabel>Email</ControlLabel>
-        <FormControl
+        <Form.Group controlId="email" bsSize="large">
+        <Form.Label>Email</Form.Label>
+        <Form.Control
             autoFocus
             type="email"
             value={email}
             onChange={e => setEmail(e.target.value)}
         />
-        </FormGroup>
-        <FormGroup controlId="password" bsSize="large">
-        <ControlLabel>Password</ControlLabel>
-        <FormControl
+        </Form.Group>
+        <Form.Group controlId="password" bsSize="large">
+        <Form.Label>Password</Form.Label>
+        <Form.Control
             value={password}
             onChange={e => setPassword(e.target.value)}
             type="password"
         />
-        </FormGroup>
+        </Form.Group>
         <Button block bsSize="large" disabled={!validateForm()} type="submit">
         Login
         </Button>
@@ -57,15 +57,13 @@ const Login = () => {
   function loginView() {
     if (loggingIn) {
       return (<em>Logging in...</em>);
-    } else if (!authenticated) {
+    } else  {
       return (
         <div>
         {(!!loginError)?(<em className={styles.error}>{loginError}</em>):(null)}
         {loginForm()}
         </div>
       );
-    } else {
-      return (<span>Logged in: { userName }</span>);
     }
   }
 

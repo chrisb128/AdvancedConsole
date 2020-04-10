@@ -1,43 +1,62 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { Row, Col } from 'react-bootstrap';
 import moment from 'moment';
 import { selectLoading, selectList } from './reducer';
 import { setServerId } from '../actions';
 
 import styles from './List.module.css';
+import { selectServerId } from '../reducer';
 
 const List = () => {
 
     const dispatch = useDispatch();
 
+    const currentServerId = useSelector(selectServerId);
     const loading = useSelector(selectLoading);
     const list = useSelector(selectList);
 
-    function rowClassName(index) {
-        return index % 2 === 0
-            ? styles.listItemEven
-            : styles.listItemOdd;
+    const onServerRowClicked = (item) => {
+      dispatch(setServerId(item._id));
+    };
+
+    const getListItemClass = (item) => {
+      const classes = [styles.listItem];
+      if (item._id === currentServerId) {
+        classes.push(styles.selectedItem);
+      }
+
+      return classes.join(' ');
     }
 
     return (
-        <div>
+        <Row>
+          <Col className={styles.list}>
             { loading 
             ? (
-                <div><em>loading servers...</em></div>
+                <em>loading servers...</em>
             )
             : (
                 list.map((item, index) => {
                     return (
-                        <div className={rowClassName(index)}>
-                            <span className={styles.listHost}>{item.host}</span>
-                            <span className={styles.listName}>{item.name}</span>
-                            <span className={styles.lastSeen}>Last Seen: {moment(item.lastReportTime).format('ll LTS')}</span>
-                            <span className={styles.listActions}><button onClick={() => dispatch(setServerId(item._id))}>Events</button></span>
-                        </div>
+                        <Row className={getListItemClass(item)} key={item._id} onClick={() => onServerRowClicked(item)}>
+                            <Col>
+                              <Row>
+                                <Col>{item.name}</Col>
+                              </Row>
+                              <Row>
+                                <Col className={styles.listHost}>{item.host}</Col>
+                              </Row>
+                              <Row>
+                                <Col className={styles.lastSeen}>Last Seen: {moment(item.lastReportTime).format('ll LTS')}</Col>
+                              </Row>
+                            </Col>
+                        </Row>
                     );
                 })
             )}
-        </div>
+          </Col>
+        </Row>
     );
 }
 

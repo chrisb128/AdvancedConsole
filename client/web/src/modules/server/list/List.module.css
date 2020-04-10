@@ -1,49 +1,28 @@
-.list {
-    border: 0;
+
+.listItem {  
+  padding: 0.5em;
+  cursor: pointer;
+  text-align: left;
 }
 
-.listItemEven {
-    background-color: lightgray;
-    padding: 1em 0.5em;
-    text-align: left;
-    position: relative;
-    height: 2.5em;
+.listItem:nth-child(even) {
+  background-color: lightgray;
 }
 
-.listItemOdd {
-    background-color: white;
-    padding: 1em 0.5em;
-    text-align: left;
-    position: relative;
-    height: 2.5em;
+.listItem:nth-child(odd) {
+  background-color: white;
 }
 
-.listActions {
-    position: absolute;
-    top: 0.5em;
-    right: 0.5em;
-    padding: .5em;
+.listItem.selectedItem {
+  background-color: #333333;
+  color: white;
 }
 
 .listHost {
-    position: absolute;
-    top: 2em;
-    left: 0.5em;
-
     font-size: small;
     font-style: italic;
 }
 
-.listName {
-    position: absolute;
-    top: 0.5em;
-    left: 0.5em;
-    
-}
-
 .lastSeen {
-  position: absolute;
-  bottom: 0.5em;
-  left: 0.5em;
-  font-size: small;
+  font-size: smaller;
 }

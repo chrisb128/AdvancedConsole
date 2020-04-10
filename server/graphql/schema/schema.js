@@ -39,6 +39,7 @@ const ServerType = new GraphQLObjectType({
     name: { type: GraphQLString },
     host: { type: GraphQLString },
     status: { type: GraphQLString },
+    lastReportTime: { type: GraphQLDate },
     users: { type: new GraphQLList(PlayerType) }
   })
 });
@@ -54,6 +55,13 @@ const EventType = new GraphQLObjectType({
     message: { type: GraphQLString }
   })
 });
+
+const EventQueryFilterType = new GraphQLInputObjectType({
+  name: 'EventQueryFilter',
+  fields: () => ({
+    types: { type: new GraphQLList(GraphQLInt) }
+  })
+})
 
 const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
@@ -93,9 +101,19 @@ const RootQuery = new GraphQLObjectType({
     },
     events: {
       type: new GraphQLList(EventType),
-      args: { serverId: { type: GraphQLID } },
+      args: {
+        serverId: { type: new GraphQLNonNull(GraphQLID) },
+        offset: { type: new GraphQLNonNull(GraphQLInt) },
+        limit: { type: new GraphQLNonNull(GraphQLInt) },
+        filter: { type: EventQueryFilterType }
+      },
       resolve(parent, args) {
-        return Event.find({ serverId: args.serverId }).sort({ time: -1 });
+        return Event.find({ 
+          serverId: args.serverId
+        })
+        .skip(args.offset)
+        .limit(args.limit)
+        .sort({ time: -1 });
       }
     }
   }

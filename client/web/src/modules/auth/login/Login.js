@@ -22,7 +22,6 @@ const Login = () => {
     }
   
     function handleSubmit(event) {
-        console.log(event);
         dispatch(login(email, password));
         event.preventDefault();
     }

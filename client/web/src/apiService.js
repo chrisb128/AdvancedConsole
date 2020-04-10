@@ -18,11 +18,16 @@ class ApiService {
   }
 
   async getServers() {
-    return this.callApi('{ servers { _id name host status users { uuid username } } }');
+    return this.callApi('{ servers { _id name host status lastReportTime users { uuid username } } }');
   }
 
-  async getEvents(serverId) {
-    return this.callApi('{ events(serverId:"' + serverId + '") { _id time type message player { uuid username } } }')
+  async getEvents(serverId, limit, offset) {
+    const eventsQuery = 
+      '{' 
+      + 'events(serverId:"' + serverId + '" limit:' + limit + ' offset:' + offset + ')' 
+      + '{ _id time type message player { uuid username } }'
+      +'}';
+    return this.callApi(eventsQuery);
   }
 }
 

@@ -10,7 +10,7 @@ const initialState = {
 
 export default createReducer(initialState, {
   AUTH_LOGIN: (state, action) => ({ ...state, loggingIn: true, loginError: null }),
-  AUTH_LOGIN_SUCCESS: (state, action) => ({ ...state, authenticated: true, loggingIn: false, userName: action.userName, token: action.token }),
+  AUTH_LOGIN_SUCCESS: (state, action) => ({ ...state, authenticated: true, loggingIn: false, userName: action.username, token: action.token }),
   AUTH_LOGIN_FAIL: (state, action) => ({ ...state, loggingIn: false, loginError: action.reason }),
   AUTH_LOGOUT: (state, action) => ({ ...state, authenticated: false, userName: '', token: '' })
 });

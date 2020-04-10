@@ -10,19 +10,17 @@ import './App.css';
 
 function App() {
 
-    useEffect(() => {
-      document.title = 'Advanced Console';
-    });
-    
-    const authenticated = useSelector(selectAuthenticated);
-    
-    return (
-        <div className="App">
-            {authenticated
-            ?<Server/>
-            :<Auth/>   
-            }
-        </div>
+  useEffect(() => {
+    document.title = 'Advanced Console';
+  });
+  
+  const authenticated = useSelector(selectAuthenticated);
+  
+  return (
+    <div className="App">
+      <Auth/>   
+      { authenticated ? <Server/> : null }
+    </div>
   );
 }
 

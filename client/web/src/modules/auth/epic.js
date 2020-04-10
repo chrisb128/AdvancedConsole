@@ -4,8 +4,6 @@ import { filter, mergeMap } from 'rxjs/operators';
 import AuthService from './authService'
 
 import { login, loginSuccess, loginFail } from './actions';
-import { selectToken } from './reducer';
-
 const auth = new AuthService();
 
 const loginEpic = (actions$, state$) => actions$.pipe(

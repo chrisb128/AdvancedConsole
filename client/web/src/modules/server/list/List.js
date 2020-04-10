@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import moment from 'moment';
 import { selectLoading, selectList } from './reducer';
 import { setServerId } from '../actions';
 
@@ -30,6 +31,7 @@ const List = () => {
                         <div className={rowClassName(index)}>
                             <span className={styles.listHost}>{item.host}</span>
                             <span className={styles.listName}>{item.name}</span>
+                            <span className={styles.lastSeen}>Last Seen: {moment(item.lastReportTime).format('ll LTS')}</span>
                             <span className={styles.listActions}><button onClick={() => dispatch(setServerId(item._id))}>Events</button></span>
                         </div>
                     );

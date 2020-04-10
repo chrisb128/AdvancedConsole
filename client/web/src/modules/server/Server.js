@@ -21,11 +21,22 @@ const Server = () => {
     function mainContent() {
         if (!!serverId) {
             return (
-                <div>
-                    <h2>{server.name}</h2>
+              <div>
+                <div className={styles.serverTitle}>
+                  <h2>{server.name}</h2>
+                </div>
+                <div className={styles.eventsList}>
                     <Events/>
                 </div>
-            )
+                <div className={styles.serverPeople}>
+                  <ul>{
+                    server.users.map(user => {
+                      return (<li>{user.username}</li>);
+                    })
+                  }</ul>
+                </div>
+              </div>
+            );
         } else {
             return <p>Please select a server to view their events</p>;
         }

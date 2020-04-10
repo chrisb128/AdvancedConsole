@@ -38,4 +38,12 @@
     position: absolute;
     top: 0.5em;
     left: 0.5em;
+    
+}
+
+.lastSeen {
+  position: absolute;
+  bottom: 0.5em;
+  left: 0.5em;
+  font-size: small;
 }

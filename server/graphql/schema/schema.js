@@ -108,12 +108,18 @@ const RootQuery = new GraphQLObjectType({
         filter: { type: EventQueryFilterType }
       },
       resolve(parent, args) {
-        return Event.find({ 
-          serverId: args.serverId
-        })
-        .skip(args.offset)
-        .limit(args.limit)
-        .sort({ time: -1 });
+        if (!args.filter) {
+          return Event.find({ serverId: args.serverId })
+            .skip(args.offset)
+            .limit(args.limit)
+            .sort({ time: -1 });
+        } else {          
+          return Event.find({ serverId: args.serverId })
+            .where('type').in(args.filter.types)
+            .skip(args.offset)
+            .limit(args.limit)
+            .sort({ time: -1 });
+        }
       }
     }
   }
@@ -178,7 +184,7 @@ const Mutation = new GraphQLObjectType({
 
         return Event.create({
           serverId: args.serverId,
-          type: args.type,
+          type: args.eventType,
           player: args.player,
           message: args.message,
           time: Date.now()

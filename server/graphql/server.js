@@ -23,7 +23,7 @@ require('./routes/auth')(app);
 
 
 app.use('/server/api/query', 
-  passport.authenticate('jwt', { session: false }), 
+  //passport.authenticate('jwt', { session: false }), 
   graphqlHTTP({
     schema,
     graphiql: !environment.prod

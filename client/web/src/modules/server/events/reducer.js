@@ -5,7 +5,7 @@ const initialState = {
     loading: false,
     pageSize: 50,
     filter: {
-      types: [1, 2, 3, 4, 5, 6, 7]
+      types: [1, 2, 3, 4, 5, 6, 7, 13, 14]
     }
 };
 

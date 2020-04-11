@@ -23,6 +23,8 @@ const Event = (props) => {
       case 10: return 'World Unload';
       case 11: return 'Chunk Load';
       case 12: return 'Chunk Unload';
+      case 13: return 'Item Pickup';
+      case 14: return 'Item Drop';
     }
   }
 

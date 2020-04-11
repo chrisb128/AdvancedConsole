@@ -18,10 +18,15 @@ const Server = () => {
 
   
     useEffect(() => {
-
       dispatch(fetchServers());
-      setInterval(() => dispatch(fetchServers()), 5000);
+    }, [dispatch]);
 
+    useEffect(() => {
+      const timer = setInterval(
+        () => dispatch(fetchServers()),
+        5000
+      );
+      return () => clearInterval(timer);
     }, [dispatch]);
 
     function mainContent() {
@@ -31,12 +36,15 @@ const Server = () => {
                 <Col>
                   <Row>
                     <Col xs={3}><h2>{server.name}</h2></Col>
-                    <Col>Users:
-                      <ul>{
+                    <Col>
+                      <Row>
+                        <Col>Users:</Col>
+                      </Row>
+                      {
                         server.users.map(user => {
-                          return (<li>{user.username}</li>);
+                          return (<Row><Col>{user.username}</Col></Row>);
                         })
-                      }</ul>
+                      }
                     </Col>
                   </Row>
                   <Row>

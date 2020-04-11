@@ -21,7 +21,6 @@ app.use(passport.initialize());
 require('./passport')(passport);
 require('./routes/auth')(app);
 
-
 app.use('/server/api/query', 
   passport.authenticate('jwt', { session: false }), 
   graphqlHTTP({

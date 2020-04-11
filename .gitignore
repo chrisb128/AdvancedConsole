@@ -2,6 +2,9 @@ package-lock.json
 node_modules
 .idea
 .vscode
+.gradle
 plugin/fabric/out
 plugin/fabric/target
 plugin/forge/build
+plugin/forge/out
+plugin/forge/run

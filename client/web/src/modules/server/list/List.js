@@ -32,7 +32,7 @@ const List = () => {
     return (
         <Row>
           <Col className={styles.list}>
-            { loading 
+            { loading && list.length === 0
             ? (
                 <em>loading servers...</em>
             )

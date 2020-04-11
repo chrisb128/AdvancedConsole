@@ -6,8 +6,8 @@ const initialState = {
 };
 
 export default createReducer(initialState, {
-    SERVER_FETCH_SERVERS: (state, action) => ({...state, loading: true}),
-    SERVER_FETCH_SERVERS_SUCCESS: (state, action) => ({...state, loading: false, list: action.list})
+    SERVER_FETCH_SERVERS: (state, action) => ({...state, loading: true }),
+    SERVER_FETCH_SERVERS_SUCCESS: (state, action) => ({...state, loading: false, list: action.list })
 });
 
 export const selectLoading = state => state.server.list.loading;

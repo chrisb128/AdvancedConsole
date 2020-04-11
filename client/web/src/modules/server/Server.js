@@ -16,8 +16,12 @@ const Server = () => {
     const serverId = useSelector(selectServerId)
     const server = useSelector(selectServerInfo(serverId));
 
+  
     useEffect(() => {
+
       dispatch(fetchServers());
+      setInterval(() => dispatch(fetchServers()), 5000);
+
     }, [dispatch]);
 
     function mainContent() {

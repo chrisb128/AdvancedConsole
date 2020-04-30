@@ -1,10 +1,4 @@
-const graphql = require('graphql');
-const GraphQLDate = require('graphql-date');
-const Server = require('../models/server');
-const Event = require('../models/event');
-const User = require('../models/user');
-
-const { 
+import {
   GraphQLObjectType,
   GraphQLString,
   GraphQLID,
@@ -13,7 +7,12 @@ const {
   GraphQLList,
   GraphQLNonNull,
   GraphQLInputObjectType
-} = graphql;
+} from 'graphql';
+
+import GraphQLDate from 'graphql-date';
+import Server from '../models/server';
+import Event from '../models/event';
+import User from '../models/user';
 
 const UserType = new GraphQLObjectType({
   name: 'User',
@@ -35,7 +34,6 @@ const ServerType = new GraphQLObjectType({
   name: 'Server',
   fields: () => ({
     _id: { type: GraphQLID },
-    uuid: { type: GraphQLString },
     name: { type: GraphQLString },
     host: { type: GraphQLString },
     status: { type: GraphQLString },
@@ -83,15 +81,6 @@ const RootQuery = new GraphQLObjectType({
         return User.find({});
       }
     },
-    serverByUuid: {
-      type: ServerType,
-      args: { 
-        uuid: { type: new GraphQLNonNull(GraphQLString) },
-      },
-      resolve(parent, args) {
-        return Server.findOne({ uuid: args.uuid });
-      }
-    },
     servers: {
       type: new GraphQLList(ServerType),
       args: {},
@@ -136,22 +125,43 @@ const PlayerInput = new GraphQLInputObjectType({
 const Mutation = new GraphQLObjectType({
   name: 'Mutation',
   fields: {
+    addUser: {
+      type: UserType,
+      args: {
+        username: { type: new GraphQLNonNull(GraphQLString) },
+        password: { type: new GraphQLNonNull(GraphQLString) }
+      },
+      resolve(parent, args) {
+        
+        User.create({
+          username: args.username
+        }).then(user => {
+          bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(args.password, salt, (err, hash) => {
+
+              if (err) throw err;
+              user.password = hash;
+              user.save()
+                .then(user => response.json(user));
+            });
+          });
+        });
+      }
+    },
     addServer: {
       type: ServerType,
       args: {
-        //GraphQLNonNull make these field required
         name: { type: new GraphQLNonNull(GraphQLString) },
-        host: { type: new GraphQLNonNull(GraphQLString) },
-        uuid: { type: new GraphQLNonNull(GraphQLString) }
+        host: { type: new GraphQLNonNull(GraphQLString) }
       },
       resolve(parent, args) {
         return Server.create({
           name: args.name,
           host: args.host,
-          uuid: args.uuid,
           status: '',
           time: Date.now(),
-          users: []
+          users: [],
+          hidden: false
         });
       }
     },
@@ -194,7 +204,7 @@ const Mutation = new GraphQLObjectType({
   }
 });
 
-module.exports = new GraphQLSchema({
+export default new GraphQLSchema({
     query: RootQuery,
     mutation: Mutation
 });

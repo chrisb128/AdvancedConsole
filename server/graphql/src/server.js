@@ -1,14 +1,15 @@
-const express = require('express');
-const graphqlHTTP = require('express-graphql');
-const mongoose = require('mongoose');
-const passport = require('passport');
-const https = require('https');
-const fs = require('fs');
+import express from 'express';
+import graphqlHTTP from 'express-graphql';
+import mongoose from 'mongoose';
+import passport from 'passport';
+import https from 'https';
+import fs from 'fs';
 
-const schema = require('./schema/schema');
-const environment = require('./environment');
-const config = require('./config');
-
+import schema from './schema/schema';
+import environment from './environment';
+import config from './config';
+import configurePassport from './passport';
+import configureAuthRoutes from './routes/auth';
 
 mongoose.connect(config.connectionString, { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.connection.once('open', () => {
@@ -18,8 +19,9 @@ mongoose.connection.once('open', () => {
 const app = express();
 app.use(express.json());
 app.use(passport.initialize());
-require('./passport')(passport);
-require('./routes/auth')(app);
+
+configurePassport(passport);
+configureAuthRoutes(app);
 
 app.use('/server/api/query', 
   passport.authenticate('jwt', { session: false }), 

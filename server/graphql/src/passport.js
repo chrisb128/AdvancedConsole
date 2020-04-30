@@ -1,14 +1,13 @@
-const jwt = require('jsonwebtoken')
-const JwtStrategy = require('passport-jwt').Strategy;
-const ExtractJwt = require('passport-jwt').ExtractJwt;
-const User = require('./models/user');
-const config = require('./config');
+import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
+
+import User from './models/user';
+import config from './config';
 
 const opts = {};
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 opts.secretOrKey = config.jwtSecret;
 
-module.exports = passport => {
+export default passport => {
   passport.use(
     new JwtStrategy(opts, (jwtPayload, done) => {
       User.findById(jwtPayload.id)

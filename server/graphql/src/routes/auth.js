@@ -1,12 +1,12 @@
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
-const config = require('../config');
-const environment = require('../environment');
+import config from '../config';
+import environment from '../environment';
 
-const User = require('../models/user');
+import User from '../models/user';
 
-module.exports = app => {
+export default app => {
   
   if (!environment.prod) {
     app.post('/server/api/auth/register', (req, response) => {
@@ -70,4 +70,4 @@ module.exports = app => {
         })
       }));
   });
-}
+};

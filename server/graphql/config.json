@@ -1,6 +1,0 @@
-{
-  "connectionString": "mongodb://localhost/advanced-console",
-  "jwtSecret": "JNusVHAVT2K5uvyaZn4g4bSxWmkY9r6WRzo2tX7Z9ZDbZmmbPgYz7ogtYnmHLMVu7NgbN32P3GN3me4",
-  "sslKeyPath": null,
-  "sslChainPath": null
-}

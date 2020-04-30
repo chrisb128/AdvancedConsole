@@ -10,10 +10,13 @@ task deleteOutputFolders(type: Delete) {
   delete "client/web/build"
 }
 
-task clean(type: Delete, dependsOn: deleteOutputFolders) {
+task clean(dependsOn: deleteOutputFolders) {
 }
 
 task buildWebClient(type: Exec, dependsOn: deleteOutputFolders) {
-  workingDir "client/web"
   commandLine "npm.cmd", "run", "build"
+}
+
+task build {
+  dependsOn buildWebClient
 }

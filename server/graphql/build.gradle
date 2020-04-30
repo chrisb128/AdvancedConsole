@@ -10,10 +10,13 @@ task deleteOutputFolders(type: Delete) {
   delete "server/graphql/build"
 }
 
-task clean(type: Delete, dependsOn: deleteOutputFolders) {
+task clean(dependsOn: deleteOutputFolders) {
 }
 
 task buildGraphQlServer(type: Exec, dependsOn: deleteOutputFolders) {
-  workingDir "server/graphql"
   commandLine "npx.cmd", "webpack"
+}
+
+task build {
+  dependsOn buildGraphQlServer
 }

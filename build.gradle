@@ -8,6 +8,9 @@ subprojects {
     version = '1.0'
 }
 
+dependencies {
+}
+
 task deleteOutputFolders(type: Delete) {
   delete "build"
 }
@@ -16,7 +19,8 @@ task clean(type: Delete, dependsOn: deleteOutputFolders) {
 }
 
 task assembleServer(type: Copy) {
-  dependsOn project(':server:graphql').build
+  dependsOn("clean")
+  dependsOn("server:graphql:build")
 
   from "server/graphql/dist/server.js"
   from "server/graphql/config.sample.json"
@@ -24,14 +28,14 @@ task assembleServer(type: Copy) {
 }
 
 task assembleWebClient(type: Copy) {
-  dependsOn project(':client:web').build
+  dependsOn("clean")
+  dependsOn("client:web:build")  
 
   from "client/web/build"
   into "build/client"
 }
 
 task build {
-  dependsOn clean
   dependsOn assembleServer
   dependsOn assembleWebClient
 }

@@ -51,16 +51,23 @@ export default app => {
 
     User.findOne({ username: userName })
       .then((user => {
-        bcrypt.compare(password, user.password).then(isMatch => {
+        if (!user) {
+          return res
+            .status(400)
+            .json({ success: false, reason: "Username or password incorrect" });
+        }
+
+        return bcrypt.compare(password, user.password).then(isMatch => {
           if (isMatch) {
             signJwtToken(user._id, user.username, (err, token) => {
-              res.json({
-                success: true,
-                token: token
-              });
         
               user.lastLogin = Date.now();
               user.save();
+              
+              return res.json({
+                success: true,
+                token: token
+              });
             });
           } else {
             return res
@@ -68,6 +75,7 @@ export default app => {
               .json({ success: false, reason: "Username or password incorrect" });
           }
         })
+
       }));
   });
 };

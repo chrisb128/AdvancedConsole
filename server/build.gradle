@@ -14,7 +14,7 @@ task clean(dependsOn: deleteOutputFolders) {
 }
 
 task buildGraphQlServer(type: Exec, dependsOn: deleteOutputFolders) {
-  commandLine "npx.cmd", "webpack"
+  commandLine "npm.cmd", "run", "build"
 }
 
 task build {

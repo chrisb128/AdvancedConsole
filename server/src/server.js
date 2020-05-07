@@ -11,7 +11,19 @@ import config from './config';
 import configurePassport from './passport';
 import configureAuthRoutes from './routes/auth';
 
-mongoose.connect(config.connectionString, { useNewUrlParser: true, useUnifiedTopology: true });
+if (!!process.env.DB_HOST) {
+  config.connectionString = `mongodb://${process.env.DB_HOST}:27017/advanced-console?authSource=admin`;
+}
+
+const mongoOptions = { 
+  useNewUrlParser: true, 
+  useUnifiedTopology: true, 
+  user: process.env.DB_USER, 
+  pass: process.env.DB_PASS
+};
+console.log(mongoOptions);
+
+mongoose.connect(config.connectionString, mongoOptions);
 mongoose.connection.once('open', () => {
   console.log('connected to db');
 });

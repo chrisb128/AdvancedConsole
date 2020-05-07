@@ -1,3 +1,7 @@
+
+print(DB_USER)
+print(DB_PASS)
+
 db = db.getSiblingDB('admin');
 db.auth('root', 'eXAVMdGZododxj4wMr9w');
 db.createUser(

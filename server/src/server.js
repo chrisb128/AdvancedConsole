@@ -21,7 +21,6 @@ const mongoOptions = {
   user: process.env.DB_USER, 
   pass: process.env.DB_PASS
 };
-console.log(mongoOptions);
 
 mongoose.connect(config.connectionString, mongoOptions);
 mongoose.connection.once('open', () => {

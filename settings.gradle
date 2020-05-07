@@ -8,4 +8,4 @@
  */
 rootProject.name = 'advanced-console'
 
-include 'server:graphql', 'client:web'
+include 'server', 'client'

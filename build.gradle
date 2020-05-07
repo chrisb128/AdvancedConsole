@@ -18,21 +18,14 @@ task deleteOutputFolders(type: Delete) {
 task clean(type: Delete, dependsOn: deleteOutputFolders) {
 }
 
-task assembleServer(type: Copy) {
+task assembleServer(type: Exec) {
   dependsOn("clean")
-  dependsOn("server:graphql:build")
-
-  from "server/graphql/dist/server.js"
-  from "server/graphql/config.sample.json"
-  into "build/server"
+  dependsOn("server:build")
 }
 
-task assembleWebClient(type: Copy) {
+task assembleWebClient(type: Exec) {
   dependsOn("clean")
-  dependsOn("client:web:build")  
-
-  from "client/web/build"
-  into "build/client"
+  dependsOn("client:build")
 }
 
 task build {

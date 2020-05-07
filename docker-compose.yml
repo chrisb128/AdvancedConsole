@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+
+  ## MongoDB storage
+  storage:
+    build: ./storage
+    environment: 
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: eXAVMdGZododxj4wMr9w
+      MONGO_INITDB_DATABASE: admin
+    expose:
+      - 27017
+    volumes:
+      - advanced-console_db:/data/db
+      - advanced-console_configdb:/data/configdb
+    
+
+  ##  API back-end
+  api:
+    build: ./server
+    environment:
+      DB_HOST: storage
+      DB_USER: statusweb
+      DB_PASS: E8Zrmqg59xTowNgVdZFVTj
+    expose:
+      - 3030
+    links:
+      - storage
+
+  ## Web front-end
+  client:
+    build: ./client
+    environment:
+      API_HOST: api
+      API_PORT: 3030
+    expose:
+      - 80
+    ports:
+      - 80:80
+    links:
+      - api
+volumes:  
+  advanced-console_db:
+  advanced-console_configdb:

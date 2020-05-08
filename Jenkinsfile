@@ -2,6 +2,12 @@ pipeline {
   agent any
   stages {
     stage('Install Packages') {
+      agent {
+        node {
+          label 'NodeJS'
+        }
+
+      }
       steps {
         sh 'cd server && npm install'
         sh 'cd client && npm install'
@@ -9,6 +15,12 @@ pipeline {
     }
 
     stage('Build') {
+      agent {
+        node {
+          label 'NodeJS'
+        }
+
+      }
       steps {
         sh 'cd server && npm run build'
         sh 'cd client && npm run build'

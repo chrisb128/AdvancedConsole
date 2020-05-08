@@ -1,10 +1,5 @@
 pipeline {
-  agent {
-    dockerfile {
-      filename 'build.Dockerfile'
-    }
-
-  }
+  agent any
   stages {
     stage('Install Packages') {
       parallel {

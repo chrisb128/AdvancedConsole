@@ -1,11 +1,19 @@
 pipeline {
-  agent none
+  agent any
   stages {
-    stage('Build') {
+    stage('Install Packages') {
       steps {
-        sh 'chmod +x ./gradlew'
-        sh './gradlew buildAll'
+        sh 'cd server && npm install'
+        sh 'cd client && npm install'
       }
     }
+
+    stage('Build') {
+      steps {
+        sh 'cd server && npm run build'
+        sh 'cd client && npm run build'
+      }
+    }
+
   }
 }

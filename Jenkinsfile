@@ -2,8 +2,10 @@ pipeline {
   agent none
   stages {
     stage('Build') {
-      sh 'chmod +x ./gradlew'
-      sh './gradlew buildAll'
+      steps {
+        sh 'chmod +x ./gradlew'
+        sh './gradlew buildAll'
+      }
     }
   }
 }

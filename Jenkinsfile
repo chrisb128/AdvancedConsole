@@ -7,16 +7,48 @@ pipeline {
   }
   stages {
     stage('Install Packages') {
-      steps {
-        sh 'cd server && npm install'
-        sh 'cd client && npm install'
+      parallel {
+        stage('Install Packages - API') {
+          steps {
+            dir(path: 'server') {
+              sh 'npm install'
+            }
+
+          }
+        }
+
+        stage('Install Packages - Client') {
+          steps {
+            dir(path: 'client') {
+              sh 'npm install'
+            }
+
+          }
+        }
+
       }
     }
 
     stage('Build') {
-      steps {
-        sh 'cd server && npm run build'
-        sh 'cd client && npm run build'
+      parallel {
+        stage('Build Server') {
+          steps {
+            dir(path: 'server') {
+              sh 'npm run build'
+            }
+
+          }
+        }
+
+        stage('Build Client') {
+          steps {
+            dir(path: 'client') {
+              sh 'npm run build'
+            }
+
+          }
+        }
+
       }
     }
 

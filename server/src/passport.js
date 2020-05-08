@@ -5,7 +5,7 @@ import config from './config';
 
 const opts = {};
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-opts.secretOrKey = config.jwtSecret;
+opts.secretOrKey = process.env.JWT_SECRET;
 
 export default passport => {
   passport.use(

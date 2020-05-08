@@ -5,7 +5,7 @@ RUN useradd --create-home --home-dir /srv/app/server --shell /bin/bash consolesr
 RUN chown consolesrv:consolesrv /srv/app/server
 
 COPY --chown=consolesrv:consolesrv ./dist /srv/app/server/
-COPY --chown=consolesrv:consolesrv ./config.sample.json  /srv/app/server/config.json
+RUN chmod -R 744 /srv/app/server
 
 EXPOSE 3030
 

@@ -1,7 +1,6 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-import config from '../config';
 import environment from '../environment';
 
 import User from '../models/user';
@@ -37,7 +36,7 @@ export default app => {
     // Sign token
     jwt.sign(
       payload,
-      config.jwtSecret, {
+      process.env.JWT_SECRET, {
         expiresIn: 31556926 // 1 year in seconds
       },
       (err, token) => {

@@ -15,7 +15,7 @@ task clean(dependsOn: deleteOutputFolders) {
 
 task buildGraphQlServer(type: Exec, dependsOn: deleteOutputFolders) {
   String npm = 'npm';
-  if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+  if (System.env['OS'].contains('Windows')) {
       npm = 'npm.cmd'
   }
 

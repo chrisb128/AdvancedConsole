@@ -8,8 +8,8 @@ pipeline {
   stages {
     stage('Install Packages') {
       steps {
-        sh 'cd server && npm install --timing'
-        sh 'cd client && npm install --timing'
+        sh 'cd server && npm install --verbose'
+        sh 'cd client && npm install --verbose'
       }
     }
 

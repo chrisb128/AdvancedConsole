@@ -4,7 +4,7 @@ pipeline {
     stage('Install Packages') {
       agent {
         node {
-          label 'NodeJS'
+          label 'master'
         }
 
       }
@@ -17,7 +17,7 @@ pipeline {
     stage('Build') {
       agent {
         node {
-          label 'NodeJS'
+          label 'master'
         }
 
       }

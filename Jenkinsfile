@@ -20,5 +20,19 @@ pipeline {
       }
     }
 
+    stage('Build Images') {
+      agent {
+        docker {
+          image 'docker:dind'
+        }
+
+      }
+      steps {
+        sh 'docker build storage -t advanced-console_storage'
+        sh 'docker build server -t advanced-console_api'
+        sh 'docker build client -t advanced-console_client'
+      }
+    }
+
   }
 }

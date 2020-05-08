@@ -51,8 +51,8 @@ task assembleStorage(type: Exec) {
   saveDockerImage("advanced-console_storage", "build/storage.zip")
 }
 
-task build {
+task buildAll {
   dependsOn assembleStorage
-  dependsOn assembleServer
   dependsOn assembleWebClient
+  dependsOn assembleServer
 }

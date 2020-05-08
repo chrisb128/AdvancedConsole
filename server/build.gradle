@@ -14,9 +14,18 @@ task clean(dependsOn: deleteOutputFolders) {
 }
 
 task buildGraphQlServer(type: Exec, dependsOn: deleteOutputFolders) {
-  commandLine "npm.cmd", "run", "build"
+  String npm = 'npm';
+  if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+      npm = 'npm.cmd'
+  }
+
+  commandLine npm, "run", "build"
+}
+
+task buildDockerImage(type: Exec, dependsOn: buildGraphQlServer) {
+  commandLine "docker", "build", ".", "-t", "advanced-console_api:latest"
 }
 
 task build {
-  dependsOn buildGraphQlServer
+  dependsOn buildDockerImage
 }

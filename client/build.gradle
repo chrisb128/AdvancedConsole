@@ -14,9 +14,17 @@ task clean(dependsOn: deleteOutputFolders) {
 }
 
 task buildWebClient(type: Exec, dependsOn: deleteOutputFolders) {
-  commandLine "npm.cmd", "run", "build"
+  String npm = 'npm';
+  if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+      npm = 'npm.cmd'
+  }
+  commandLine npm, "run", "build"
+}
+
+task buildDockerImage(type: Exec, dependsOn: buildWebClient) {
+  commandLine "docker", "build", ".", "-t", "advanced-console_client:latest"
 }
 
 task build {
-  dependsOn buildWebClient
+  dependsOn buildDockerImage
 }

@@ -8,4 +8,4 @@
  */
 rootProject.name = 'advanced-console'
 
-include 'server', 'client'
+include 'server', 'client', 'storage'

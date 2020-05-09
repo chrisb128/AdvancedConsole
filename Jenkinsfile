@@ -3,11 +3,17 @@ pipeline {
     dockerfile {
       filename 'build.Dockerfile'
       dir '.'
-      args '--network="host" --volume /var/jenkins_home:/var/jenkins_home --env DOCKER_HOST=tcp://docker:2376  --env DOCKER_CERT_PATH=/certs/client  --env DOCKER_TLS_VERIFY=1 --volume /certs/client:/certs/client'
+      args '--network="host" --volume /var/jenkins_home:/var/jenkins_home --env DOCKER_HOST=tcp://docker:2376  --env DOCKER_CERT_PATH=/certs/client  --env DOCKER_TLS_VERIFY=1 --volume /certs/client:/certs/client '
     }
   }
 
   stages {
+    stage('Init Report') {
+      steps {
+        sh 'id -u'
+        sh 'id -g'
+      }
+    }
 
     stage('Install Packages') {
 
@@ -45,10 +51,10 @@ pipeline {
 
     stage('Archive Images') {
       steps {
-        sh 'mkdir -p ./out/${BUILD_NUM}/'
-        sh 'docker save --output ./out/${BUILD_NUM}/storage.zip advanced-console_storage'
-        sh 'docker save --output ./out/${BUILD_NUM}/api.zip advanced-console_api'
-        sh 'docker save --output ./out/${BUILD_NUM}/client.zip advanced-console_client'
+        sh 'mkdir -p /var/artifacts/out/${BUILD_TAG}/'
+        sh 'docker save --output /var/artifacts/${BUILD_TAG}/storage.zip advanced-console_storage'
+        sh 'docker save --output /var/artifacts/${BUILD_TAG}/api.zip advanced-console_api'
+        sh 'docker save --output /var/artifacts/${BUILD_TAG}/client.zip advanced-console_client'
       }
     }
   }

@@ -8,8 +8,8 @@ RUN curl -fsSLO https://download.docker.com/linux/static/stable/x86_64/docker-${
                  -C /usr/local/bin docker/docker \
   && rm docker-${DOCKERVERSION}.tgz
 
-RUN useradd jenkins --shell /bin/bash --create-home
-RUN groupadd docker
+RUN useradd -u 996 jenkins --shell /bin/bash --create-home
+RUN groupadd -g 994 jenkins
 RUN usermod -aG docker jenkins 
 
 USER jenkins

@@ -43,5 +43,19 @@ pipeline {
         sh 'docker build ./client -t advanced-console_client'
       }
     }
+
+    stage('Archive Images') {
+      steps {
+        sh 'docker save --output ./build/storage.zip advanced-console_storage'
+        sh 'docker save --output ./build/api.zip advanced-console_api'
+        sh 'docker save --output ./build/client.zip advanced-console_client'
+      }
+    }
+  }
+
+  post {
+    always {
+
+    }
   }
 }

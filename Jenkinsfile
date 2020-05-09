@@ -3,7 +3,7 @@ pipeline {
     dockerfile {
       filename 'build.Dockerfile'
       dir '.'
-      args '--network="host" --volume /var/jenkins_home:/var/jenkins_home --env DOCKER_HOST=tcp://docker:2376  --env DOCKER_CERT_PATH=/certs/client  --env DOCKER_TLS_VERIFY=1 --volume /certs/client:/certs/client --volume /var/artifacts:/var/artifacts:rw,z'
+      args '--network="host" --env DOCKER_HOST=tcp://docker:2376  --env DOCKER_CERT_PATH=/certs/client  --env DOCKER_TLS_VERIFY=1 --volume /var/jenkins_home:/var/jenkins_home --volume /certs/client:/certs/client --volume /var/artifacts:/var/artifacts'
     }
   }
 
@@ -56,7 +56,7 @@ pipeline {
         sh 'docker save --output ./out/storage.zip advanced-console_storage'
         sh 'docker save --output ./out/api.zip advanced-console_api'
         sh 'docker save --output ./out/client.zip advanced-console_client'
-        archiveArtifacts artifacts: './out/*.zip', fingerprint: true
+        archiveArtifacts artifacts: 'out/*.zip', fingerprint: true
       }
     }
   }

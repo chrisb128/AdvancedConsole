@@ -8,11 +8,6 @@ pipeline {
   }
 
   stages {
-    stage('Initialize Agent') {
-      steps {
-        docker.buildImage()
-      }
-    }
 
     stage('Install Packages') {
 

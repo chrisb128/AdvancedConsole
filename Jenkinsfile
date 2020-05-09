@@ -46,9 +46,10 @@ pipeline {
 
     stage('Archive Images') {
       steps {
-        sh 'docker save --output ./build/storage.zip advanced-console_storage'
-        sh 'docker save --output ./build/api.zip advanced-console_api'
-        sh 'docker save --output ./build/client.zip advanced-console_client'
+        sh 'mkdir -p ./out'
+        sh 'docker save --output ./out/storage.zip advanced-console_storage'
+        sh 'docker save --output ./out/api.zip advanced-console_api'
+        sh 'docker save --output ./out/client.zip advanced-console_client'
       }
     }
   }

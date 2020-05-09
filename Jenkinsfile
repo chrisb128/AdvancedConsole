@@ -3,7 +3,7 @@ pipeline {
     dockerfile {
       filename 'build.Dockerfile'
       dir '.'
-      args '-v /var/run/docker.sock:/var/run/docker.sock'
+      args '-v /var/run/docker.sock:/var/run/docker.sock -v /var/jenkins_home:/var/jenkins_home'
     }
   }
 

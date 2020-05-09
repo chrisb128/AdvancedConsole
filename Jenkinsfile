@@ -51,5 +51,19 @@ pipeline {
 
       }
     }
+
+    stage('Build Images') {
+      parallel {
+        stage('Build Storage Image') {
+          sh 'docker build ./storage -t advanced-console_storage'
+        }
+        stage('Build API Image') {
+          sh 'docker build ./server -t advanced-console_api'
+        }
+        stage('Build Web Client') {
+          sh 'docker build ./client -t advanced-console_client'
+        }
+      }
+    }
   }
 }

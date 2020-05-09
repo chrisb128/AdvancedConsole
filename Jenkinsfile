@@ -3,7 +3,7 @@ pipeline {
     dockerfile {
       filename 'build.Dockerfile'
       dir '.'
-      args '--network="host" --volume /var/jenkins_home:/var/jenkins_home --env DOCKER_HOST=tcp://docker:2376  --env DOCKER_CERT_PATH=/certs/client  --env DOCKER_TLS_VERIFY=1 --volume /certs/client:/certs/client --volume /var/artifacts:/var/artifacts'
+      args '--network="host" --volume /var/jenkins_home:/var/jenkins_home --env DOCKER_HOST=tcp://docker:2376  --env DOCKER_CERT_PATH=/certs/client  --env DOCKER_TLS_VERIFY=1 --volume /certs/client:/certs/client'
     }
   }
 
@@ -35,8 +35,7 @@ pipeline {
       }
     }
 
-    stage('Build Images') {
-      
+    stage('Build Images') {      
       steps {
         sh 'docker build ./storage -t advanced-console_storage'
         sh 'docker build ./server -t advanced-console_api'
@@ -46,10 +45,10 @@ pipeline {
 
     stage('Archive Images') {
       steps {
-        sh 'mkdir -p /var/artifacts/${BUILD_TAG}'
-        sh 'docker save --output /var/artifacts/${BUILD_TAG}/storage.zip advanced-console_storage'
-        sh 'docker save --output /var/artifacts/${BUILD_TAG}/api.zip advanced-console_api'
-        sh 'docker save --output /var/artifacts/${BUILD_TAG}/client.zip advanced-console_client'
+        sh 'mkdir -p ./out/${BUILD_NUM}/'
+        sh 'docker save --output ./out/${BUILD_NUM}/storage.zip advanced-console_storage'
+        sh 'docker save --output ./out/${BUILD_NUM}/api.zip advanced-console_api'
+        sh 'docker save --output ./out/${BUILD_NUM}/client.zip advanced-console_client'
       }
     }
   }

@@ -52,17 +52,17 @@ pipeline {
 
     stage('Archive Images') {
       steps {
-        sh 'mkdir -p /var/artifacts/${BUILD_TAG}/'
-        sh 'docker save --output /var/artifacts/${BUILD_TAG}/storage.zip advanced-console_storage'
-        sh 'docker save --output /var/artifacts/${BUILD_TAG}/api.zip advanced-console_api'
-        sh 'docker save --output /var/artifacts/${BUILD_TAG}/client.zip advanced-console_client'
+        sh 'mkdir -p ./out'
+        sh 'docker save --output ./out/storage.zip advanced-console_storage'
+        sh 'docker save --output ./out/api.zip advanced-console_api'
+        sh 'docker save --output ./out/client.zip advanced-console_client'
       }
     }
   }
 
   post {
     always {
-      archiveArtifacts artifacts: '/var/artifacts/${BUILD_TAG}/*.zip', fingerprint: true
+      archiveArtifacts artifacts: './out/*.zip', fingerprint: true
     }
   }
 }

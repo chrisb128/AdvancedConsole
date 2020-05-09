@@ -1,9 +1,6 @@
 pipeline {
   agent {
-    dockerfile {
-      args '-v /var/run/docker.sock:/var/run/docker.sock'
-      filename 'build.Dockerfile'
-    }
+    image: 'node:10-alpine'
   }
 
   stages {
@@ -32,6 +29,7 @@ pipeline {
     }
 
     stage('Build Images') {
+      agent node
       steps {
         sh 'docker build ./storage -t advanced-console_storage'
         sh 'docker build ./server -t advanced-console_api'

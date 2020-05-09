@@ -3,7 +3,7 @@ pipeline {
     dockerfile {
       filename 'build.Dockerfile'
       dir '.'
-      args '--volume /var/run/docker.sock:/var/run/docker.sock --volume /var/jenkins_home:/var/jenkins_home'
+      args '--env DOCKER_HOST=tcp://docker:2376 --volume /var/jenkins_home:/var/jenkins_home'
     }
   }
 

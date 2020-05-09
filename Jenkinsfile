@@ -56,13 +56,8 @@ pipeline {
         sh 'docker save --output ./out/storage.zip advanced-console_storage'
         sh 'docker save --output ./out/api.zip advanced-console_api'
         sh 'docker save --output ./out/client.zip advanced-console_client'
+        archiveArtifacts artifacts: './out/*.zip', fingerprint: true
       }
-    }
-  }
-
-  post {
-    always {
-      archiveArtifacts artifacts: './out/*.zip', fingerprint: true
     }
   }
 }

@@ -1,12 +1,11 @@
 pipeline {
-  agent {
-    docker {
-      image 'node:10'
-    }
-  }
+  agent { label 'master' }
 
   stages {
+
     stage('Install Packages') {
+      agent { docker { image: 'node:10' } }
+      
       steps {
         dir(path: 'server') {
           sh 'npm install'
@@ -19,6 +18,8 @@ pipeline {
     }
 
     stage('Build') {
+      agent { docker { image: 'node:10' } }
+
       steps {
         dir(path: 'server') {
           sh 'npm run build'
@@ -31,7 +32,7 @@ pipeline {
     }
 
     stage('Build Images') {
-      agent any
+      
       steps {
         sh 'docker build ./storage -t advanced-console_storage'
         sh 'docker build ./server -t advanced-console_api'

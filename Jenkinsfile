@@ -1,10 +1,20 @@
 pipeline {
-  agent { label 'master' }
+  agent { 
+    dockerfile {
+      filename 'build.Dockerfile'
+      dir '.'
+      args '-v /var/run/docker.sock:/var/run/docker.sock'
+    }
+  }
 
   stages {
+    stage('Initialize Agent') {
+      steps {
+        docker.buildImage()
+      }
+    }
 
     stage('Install Packages') {
-      agent { docker { image 'node:10' } }
 
       steps {
         dir(path: 'server') {
@@ -18,7 +28,6 @@ pipeline {
     }
 
     stage('Build') {
-      agent { docker { image 'node:10' } }
 
       steps {
         dir(path: 'server') {

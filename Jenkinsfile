@@ -29,7 +29,7 @@ pipeline {
     }
 
     stage('Build Images') {
-      agent node
+      agent any
       steps {
         sh 'docker build ./storage -t advanced-console_storage'
         sh 'docker build ./server -t advanced-console_api'

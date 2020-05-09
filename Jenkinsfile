@@ -4,8 +4,8 @@ pipeline {
   stages {
 
     stage('Install Packages') {
-      agent { docker { image: 'node:10' } }
-      
+      agent { docker { image 'node:10' } }
+
       steps {
         dir(path: 'server') {
           sh 'npm install'
@@ -18,7 +18,7 @@ pipeline {
     }
 
     stage('Build') {
-      agent { docker { image: 'node:10' } }
+      agent { docker { image 'node:10' } }
 
       steps {
         dir(path: 'server') {

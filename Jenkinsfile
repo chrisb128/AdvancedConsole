@@ -3,7 +3,7 @@ pipeline {
     dockerfile {
       filename 'build.Dockerfile'
       dir '.'
-      args '--privileged --volume /var/run/docker.sock:/var/run/docker.sock --volume /var/jenkins_home:/var/jenkins_home'
+      args '--volume /var/jenkins_home:/var/jenkins_home --env DOCKER_HOST=tcp://docker:2376  --env DOCKER_CERT_PATH=/certs/client  --env DOCKER_TLS_VERIFY=1 --volume jenkins-docker-certs:/certs/client'
     }
   }
 

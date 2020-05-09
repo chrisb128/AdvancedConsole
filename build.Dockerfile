@@ -5,6 +5,3 @@ RUN curl -fsSLO https://download.docker.com/linux/static/stable/x86_64/docker-${
   && tar xzvf docker-${DOCKERVERSION}.tgz --strip 1 \
                  -C /usr/local/bin docker/docker \
   && rm docker-${DOCKERVERSION}.tgz
-
-  RUN groupadd docker
-  RUN usermod -aG docker $USER

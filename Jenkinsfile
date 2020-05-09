@@ -1,5 +1,10 @@
 pipeline {
-  agent any
+  agent {
+    docker {
+      filename: 'build.Dockerfile'
+      args: '-v /var/run/docker.sock:/var/run/docker.sock'
+    }
+  }
   stages {
     stage('Install Packages') {
       parallel {
@@ -46,20 +51,5 @@ pipeline {
 
       }
     }
-
-    stage('Build Images') {
-      agent {
-        docker {
-          image 'docker:dind'
-        }
-
-      }
-      steps {
-        sh 'docker build storage -t advanced-console_storage'
-        sh 'docker build server -t advanced-console_api'
-        sh 'docker build client -t advanced-console_client'
-      }
-    }
-
   }
 }

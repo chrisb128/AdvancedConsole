@@ -59,4 +59,10 @@ pipeline {
       }
     }
   }
+
+  post {
+    always {
+      archiveArtifacts artifacts: '/var/artifacts/${BUILD_TAG}/*.zip', fingerprint: true
+    }
+  }
 }

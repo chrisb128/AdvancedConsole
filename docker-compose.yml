@@ -26,6 +26,7 @@ services:
       DB_HOST: storage
       DB_USER: statusweb
       DB_PASS: E8Zrmqg59xTowNgVdZFVTj
+      JWT_SECRET: RBsjHDcRVdsbuEt7FYAKaNF52tCWKQ8NKYjiMa7gLF69Ab7cv5t6UnzYyLWRFMGL9
     expose:
       - 3030
     links:

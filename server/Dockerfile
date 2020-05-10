@@ -1,7 +1,9 @@
-FROM node
+FROM node:10-alpine
+
+RUN apk add --no-cache python make g++
 
 RUN mkdir -p /srv/app/server
-RUN useradd --create-home --home-dir /srv/app/server --shell /bin/bash consolesrv
+RUN adduser consolesrv --home /srv/app/server --shell /bin/bash --disabled-password consolesrv
 RUN chown consolesrv:consolesrv /srv/app/server
 
 COPY --chown=consolesrv:consolesrv ./dist /srv/app/server/

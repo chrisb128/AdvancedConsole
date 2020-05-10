@@ -1,0 +1,1 @@
+openssl req -x509 -sha256 -nodes -newkey rsa:2048 -days 365 -subject `C=US/ST=IL/L=Chicago/O=Company Name/OU=Org/CN=localhost` -keyout privkey.pem -out fullchain.pem

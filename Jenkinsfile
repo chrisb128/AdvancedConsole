@@ -59,5 +59,11 @@ pipeline {
         archiveArtifacts artifacts: 'out/*.zip', fingerprint: true
       }
     }
+
+    stage('Deploy to Server') {
+      steps {
+        sh './deploy.sh'
+      }
+    }
   }
 }

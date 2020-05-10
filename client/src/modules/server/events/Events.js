@@ -35,7 +35,7 @@ const Events = () => {
             eventTypes.map(type => {
               return (
                 <Form.Group key={type.key}>
-                    <Form.Check checked={filterTypes.some(ft => ft == type.key)} label={type.name} onChange={(event) => typeFilterCheckChanged(event, type)}>
+                    <Form.Check checked={filterTypes.some(ft => ft === type.key)} label={type.name} onChange={(event) => typeFilterCheckChanged(event, type)}>
                     </Form.Check>
                 </Form.Group>
               );

@@ -62,6 +62,7 @@ pipeline {
 
     stage('Deploy to Server') {
       steps {
+        sh 'chmod u+x ./deploy.sh'
         sh './deploy.sh'
       }
     }

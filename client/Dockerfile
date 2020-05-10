@@ -6,6 +6,7 @@ RUN echo "Include /usr/local/apache2/conf/apache.conf" \
 
 COPY ./build /usr/local/apache2/htdocs/client/
 
-RUN mkdir /var/log/apache2/
+RUN mkdir -p /var/log/apache2/
+RUN mkdir -p /etc/ssl/
 
 EXPOSE 80

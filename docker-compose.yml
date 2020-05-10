@@ -36,14 +36,20 @@ services:
   client:
     build: ./client
     environment:
+      SERVER_HOST: localhost
       API_HOST: api
       API_PORT: 3030
     expose:
       - 80
+      - 443
     ports:
       - 80:80
+      - 443:443
     links:
       - api
+    volumes:
+      - ./privkey.pem:/etc/ssl/localhost/privkey.pem
+      - ./fullchain.pem:/etc/ssl/localhost/fullchain.pem
 volumes:  
   advanced-console_db:
   advanced-console_configdb:

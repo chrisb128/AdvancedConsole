@@ -10,3 +10,4 @@ RUN mkdir -p /var/log/apache2/
 RUN mkdir -p /etc/ssl/
 
 EXPOSE 80
+EXPOSE 443

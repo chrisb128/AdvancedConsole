@@ -2,10 +2,9 @@
 
 echo Authorization key located at $DEPLOY_ID_KEY_LOCATION
 
-echo Known Hosts File
-cat ~/.ssh/known_hosts
+echo Prefetching deploy host key
+ssh-keyscan -t rsa $DEPLOY_HOST >> /home/node/.ssh/known_hosts
 echo Sending files to server
-chmod -R $DEPLOY_ID_KEY_LOCATION 700
 scp -Cr -i $DEPLOY_ID_KEY_LOCATION ./out/ chris@status.chrisb.info:/tmp/advanced-console/
 
 echo Loading images

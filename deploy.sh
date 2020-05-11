@@ -3,7 +3,8 @@
 echo Authorization key located at $DEPLOY_ID_KEY_LOCATION
 
 echo Prefetching deploy host key
-ssh-keyscan -t rsa $DEPLOY_HOST >> /home/node/.ssh/known_hosts
+mkdir -p ~/.ssh
+ssh-keyscan -t rsa $DEPLOY_HOST >> ~/.ssh/known_hosts
 echo Sending files to server
 scp -Cr -i $DEPLOY_ID_KEY_LOCATION ./out/ chris@status.chrisb.info:/tmp/advanced-console/
 

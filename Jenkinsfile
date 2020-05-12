@@ -1,3 +1,5 @@
+properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: ''))])
+
 pipeline {
   agent { 
     dockerfile {

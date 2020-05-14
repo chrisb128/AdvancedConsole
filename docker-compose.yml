@@ -34,9 +34,11 @@ services:
 
   ## Web front-end
   client:
-    build: ./client
+    build: 
+      context: ./client
+      args:
+        USE_SSL: 0
     environment:
-      USE_SSL: 0
       SERVER_HOST: localhost
       API_HOST: api
       API_PORT: 3030

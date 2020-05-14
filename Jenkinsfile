@@ -49,7 +49,7 @@ pipeline {
       steps {
         sh 'docker build ./storage -t advanced-console_storage'
         sh 'docker build ./server -t advanced-console_api'
-        sh 'docker build ./client -t advanced-console_client'
+        sh 'docker build ./client -t advanced-console_client --build-arg USE_SSL="1"'
       }
     }
 

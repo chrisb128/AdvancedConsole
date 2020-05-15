@@ -18,37 +18,16 @@ task deleteOutputFolders(type: Delete) {
 task clean(type: Delete, dependsOn: deleteOutputFolders) {
 }
 
-def saveDockerImage(imageName, outputFile) {
-  exec {
-    commandLine("docker", "save", imageName)
-
-    File outFile = new File(rootProject.projectDir, outputFile);
-    mkdir outFile.getParent()
-    outFile.createNewFile();
-
-    standardOutput = new FileOutputStream(outFile, true)
-  }
-}
-
-task assembleServer(type: Exec) {
-  dependsOn("clean")
+task assembleServer(type: Exec, dependsOn: clean) {
   dependsOn("server:build")
-
-  saveDockerImage("advanced-console_api", "build/api.zip")
 }
 
-task assembleWebClient(type: Exec) {
-  dependsOn("clean")
+task assembleWebClient(type: Exec, dependsOn: clean) {
   dependsOn("client:build")
-
-  saveDockerImage("advanced-console_client", "build/client.zip")
 }
 
-task assembleStorage(type: Exec) {
-  dependsOn("clean")
+task assembleStorage(type: Exec, dependsOn: clean) {
   dependsOn("storage:build")
-
-  saveDockerImage("advanced-console_storage", "build/storage.zip")
 }
 
 task buildAll {

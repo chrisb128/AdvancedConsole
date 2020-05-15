@@ -21,10 +21,6 @@ task buildWebClient(type: Exec, dependsOn: deleteOutputFolders) {
   commandLine npm, "run", "build"
 }
 
-task buildDockerImage(type: Exec, dependsOn: buildWebClient) {
-  commandLine "docker", "build", ".", "-t", "advanced-console_client:latest"
-}
-
 task build {
-  dependsOn buildDockerImage
+  dependsOn buildWebClient
 }

@@ -1,6 +1,2 @@
-task buildDockerImage(type: Exec) {
-  commandLine "docker", "build", ".", "-t", "advanced-console_storage:latest"
-}
-
-task build(dependsOn: buildDockerImage) {
+task build() {
 }

@@ -22,10 +22,7 @@ task buildGraphQlServer(type: Exec, dependsOn: deleteOutputFolders) {
   commandLine npm, "run", "build"
 }
 
-task buildDockerImage(type: Exec, dependsOn: buildGraphQlServer) {
-  commandLine "docker", "build", ".", "-t", "advanced-console_api:latest"
-}
 
 task build {
-  dependsOn buildDockerImage
+  dependsOn buildGraphQlServer
 }

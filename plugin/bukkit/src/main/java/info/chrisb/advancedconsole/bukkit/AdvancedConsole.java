@@ -40,9 +40,25 @@ public final class AdvancedConsole extends JavaPlugin implements Listener {
         String configFilePath = getDataFolder().getPath() + "/config.json";
 
         Configuration configuration = Configuration.FromFile(configFilePath);
+        if (configuration == null) {
+            configuration = Configuration.FromEnvironment();
+        }
+
+        Bukkit.getLogger().info("Configuration loaded  - reporting to " + configuration.getApiUrl());
         _eventTracker = new EventTrackerApi(configuration);
         if (configuration.getServerId() == null || "".equals(configuration.getServerId())) {
-            String serverId = _eventTracker.addServer(getServer().getName(), getServer().getIp());
+
+            String name = getServer().getName();
+            String ip = getServer().getIp();
+
+            Bukkit.getLogger().info("No server ID specified, adding a new server: { name: '" + name + "', ip: '" + ip + "' }");
+            String serverId = _eventTracker.addServer(name, ip);
+
+            Bukkit.getLogger().info("Server ID: " + serverId);
+
+            if (serverId == null) {
+                Bukkit.getLogger().info("Could not retrieve server ID");
+            }
             configuration.setServerId(serverId);
             configuration.save(configFilePath);
             _eventTracker = new EventTrackerApi(configuration);

@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
+import org.bukkit.Bukkit;
 
 import java.io.*;
 
@@ -22,6 +23,11 @@ public class Configuration {
 
     public static Configuration FromFile(String path) {
         File configFile = new File(path);
+
+        if (!configFile.exists()) {
+            return null;
+        }
+
         FileInputStream stream = null;
         try {
             stream = new FileInputStream(configFile);
@@ -40,6 +46,13 @@ public class Configuration {
             configObject.get("apiUrl").getAsString(),
             configObject.get("apiUsername").getAsString(),
             configObject.get("apiPassword").getAsString());
+    }
+
+    public static Configuration FromEnvironment() {
+        return new Configuration("",
+                System.getenv("API_URL"),
+                System.getenv("API_USERNAME"),
+                System.getenv("API_PASSWORD"));
     }
 
     public String getServerId() {

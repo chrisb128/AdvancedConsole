@@ -1,5 +1,0 @@
-name: AdvancedConsole
-version: ${project.version}
-main: info.chrisb.advancedconsole.fabric.AdvancedConsole
-api-version: 1.13
-description: Advanced Minecraft remote console and status plugin

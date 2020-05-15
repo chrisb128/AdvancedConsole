@@ -1,0 +1,4 @@
+name: AdvancedConsole
+version: ${project.version}
+main: info.chrisb.advancedconsole.bukkit.AdvancedConsole
+api-version: 1.13

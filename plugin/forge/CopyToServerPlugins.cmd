@@ -1,1 +1,0 @@
-copy "build\libs\AdvancedConsoleForge-1.0-SNAPSHOT.jar" "..\..\..\server\harvest.chrisb.info\mods"

@@ -13,3 +13,4 @@ dist
 db
 release
 *.pem
+plugin/bukkit/target/

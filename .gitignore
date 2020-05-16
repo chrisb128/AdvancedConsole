@@ -14,3 +14,4 @@ db
 release
 *.pem
 plugin/bukkit/target/
+plugin/bukkit/out/

@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-d
 import Login from './modules/login/Login';
 import Server from './modules/server/Server';
 import Header from './modules/header/Header';
-
+import MyUser from './modules/my-user/MyUser';
 
 import './App.css';
 import { useSelector } from 'react-redux';
@@ -25,10 +25,22 @@ function App() {
           <Route path="/client/login">
             { authenticated 
             ? <Redirect to="/client"/> : null }
-            <Row className="Auth">
+            <Row>
               <Col>
                 <Login/>
               </Col>        
+            </Row>
+          </Route>
+          <Route path="/client/me">
+            <Row>
+              <Col>
+                <Header/>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <MyUser/>
+              </Col>
             </Row>
           </Route>
           <Route path="/client">

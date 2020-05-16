@@ -1,12 +1,13 @@
 import express from 'express';
-import graphqlHTTP from 'express-graphql';
+import { ApolloServer } from 'apollo-server-express';
 import mongoose from 'mongoose';
 import passport from 'passport';
 
-import schema from './schema/schema';
-import environment from './environment';
+import typeDefs from './schema/schema';
+import resolvers from './schema/resolvers';
 import configurePassport from './passport';
 import configureAuthRoutes from './routes/auth';
+
 
 const mongoOptions = { 
   useNewUrlParser: true, 
@@ -15,25 +16,40 @@ const mongoOptions = {
   pass: process.env.DB_PASS
 };
 
-mongoose.connect(`mongodb://${process.env.DB_HOST}:27017/advanced-console?authSource=admin`, mongoOptions);
+const dbHost = process.env.DB_HOST || 'localhost';
+mongoose.connect(`mongodb://${dbHost}:27017/advanced-console?authSource=admin`, mongoOptions);
 mongoose.connection.once('open', () => {
   console.log('connected to db');
 });
 
+
+const apollo = new ApolloServer({
+  typeDefs,
+  resolvers,
+  context: ({req}) => {
+    return { ip: req.ip, user: req.user };
+  }
+});
+
 const app = express();
 app.use(express.json());
+app.set('trust_proxy', true);
 app.use(passport.initialize());
+
+app.use('/server/api/query', (req, res, next) => {
+  passport.authenticate('jwt', { session: false }, (err, user, info) => {
+    if (user) {
+      req.user = user
+    }
+
+    next()
+  })(req, res, next)
+});
+
+apollo.applyMiddleware({ app, path: '/server/api/query' });
 
 configurePassport(passport);
 configureAuthRoutes(app);
-
-app.use('/server/api/query', 
-  passport.authenticate('jwt', { session: false }), 
-  graphqlHTTP({
-    schema,
-    graphiql: !environment.prod
-  })
-);
 
 app.listen(3030, () => {
   console.log('Listening on port 3030');

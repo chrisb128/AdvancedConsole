@@ -18,7 +18,7 @@ class ApiService {
   }
 
   async getServers() {
-    return this.callApi('{ servers { _id name host status lastReportTime users { uuid username } } }');
+    return this.callApi('{ servers { id name host status lastReportTime users { uuid username } } }');
   }
 
   async getEvents(serverId, limit, offset, types) {
@@ -30,7 +30,7 @@ class ApiService {
         + 'offset:' + offset.toString() + ' ' 
         + 'filter: { types: [' + types.map(t => t.toString()).join(',') + '] } '
       + ')' 
-      + '{ _id time type message player { uuid username } }'
+      + '{ id time type message player { uuid username } }'
       +'}';
     return this.callApi(eventsQuery);
   }

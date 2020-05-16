@@ -1,0 +1,14 @@
+.header {
+    padding: 1em;
+    border-bottom: 1px solid black;
+}
+
+.userName {
+    margin-right: 1em;
+}
+
+.personIcon {
+    width: 1.5em;
+    height: 1.5em;
+    cursor: pointer;
+}

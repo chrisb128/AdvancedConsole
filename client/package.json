@@ -11,8 +11,10 @@
     "passport-local": "^1.0.0",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.0",
+    "react-bootstrap-icons": "^1.0.2-alpha3",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.0",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "redux-devtools-extension": "^2.13.8",
     "redux-observable": "^1.2.0",
@@ -40,5 +42,5 @@
     ]
   },
   "homepage": "/client",
-  "proxy": "http://server:3030/"
+  "proxy": "http://localhost:3030/"
 }

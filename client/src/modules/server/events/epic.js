@@ -7,7 +7,7 @@ import { selectServerId } from '../reducer';
 
 import ApiService from '../../../apiService';
 
-const api = (state$) => new ApiService(state$.value.auth.token);
+const api = (state$) => new ApiService(state$.value.login.token);
 
 const fetchEventsEpic = (actions$, state$) => actions$.pipe(
     filter(action => action.type === fetchEvents().type),

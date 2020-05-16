@@ -15,4 +15,4 @@ export default combineReducers({
 });
 
 export const selectServerId = (state) => state.server.server.serverId;
-export const selectServerInfo = (serverId) => (state) => state.server.list.list.find(s => s._id === serverId);
+export const selectServerInfo = (serverId) => (state) => state.server.list.list.find(s => s.id === serverId);

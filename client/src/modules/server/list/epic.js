@@ -5,7 +5,7 @@ import { fetchServersSuccess, fetchServers } from './actions';
 
 import ApiService from '../../../apiService';
 
-const api = (state$) => new ApiService(state$.value.auth.token);
+const api = (state$) => new ApiService(state$.value.login.token);
 
 const fetchServersEpic = (actions$, state$) => actions$.pipe(
     filter(action => action.type === fetchServers().type),

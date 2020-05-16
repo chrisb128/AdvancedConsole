@@ -17,12 +17,12 @@ const List = () => {
     const list = useSelector(selectList);
 
     const onServerRowClicked = (item) => {
-      dispatch(setServerId(item._id));
+      dispatch(setServerId(item.id));
     };
 
     const getListItemClass = (item) => {
       const classes = [styles.listItem];
-      if (item._id === currentServerId) {
+      if (item.id === currentServerId) {
         classes.push(styles.selectedItem);
       }
 
@@ -39,7 +39,7 @@ const List = () => {
             : (
                 list.map((item, index) => {
                     return (
-                        <Row className={getListItemClass(item)} key={item._id} onClick={() => onServerRowClicked(item)}>
+                        <Row className={getListItemClass(item)} key={item.id} onClick={() => onServerRowClicked(item)}>
                             <Col>
                               <Row>
                                 <Col>{item.name}</Col>

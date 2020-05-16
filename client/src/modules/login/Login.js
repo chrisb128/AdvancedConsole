@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
-import { login } from '../actions';
+import { login } from './actions';
 
 import styles from './Login.module.css';
-import { selectLoggingIn, selectLoginError } from '../reducer';
+import { selectLoggingIn, selectLoginError } from './reducer';
 
 const Login = () => {
     const dispatch = useDispatch();
@@ -29,7 +29,7 @@ const Login = () => {
   function loginForm() {
     return (            
       <form onSubmit={handleSubmit}>
-        <Form.Group controlId="email" bsSize="large">
+        <Form.Group controlId="email">
         <Form.Label>Email</Form.Label>
         <Form.Control
             autoFocus
@@ -38,7 +38,7 @@ const Login = () => {
             onChange={e => setEmail(e.target.value)}
         />
         </Form.Group>
-        <Form.Group controlId="password" bsSize="large">
+        <Form.Group controlId="password">
         <Form.Label>Password</Form.Label>
         <Form.Control
             value={password}
@@ -46,7 +46,7 @@ const Login = () => {
             type="password"
         />
         </Form.Group>
-        <Button block bsSize="large" disabled={!validateForm()} type="submit">
+        <Button block disabled={!validateForm()} type="submit">
         Login
         </Button>
       </form>

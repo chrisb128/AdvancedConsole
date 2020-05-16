@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Row, Col, Accordion, Form, Card, Button } from 'react-bootstrap';
+import { Row, Col, Accordion, Form, Card } from 'react-bootstrap';
 import { selectList, selectLoading, selectFilterTypes } from './reducer';
 
 import eventTypes from './eventTypes';
@@ -67,7 +67,7 @@ const Events = () => {
             <Col>
               {
                 list.map(item => {
-                    return (<Event key={item._id} item={item}/>);
+                    return (<Event key={item.id} item={item}/>);
                 })
               }
             </Col>

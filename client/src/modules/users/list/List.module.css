@@ -1,0 +1,10 @@
+.userItem {
+    padding: 1em;
+}
+
+.userItem:nth-child(odd) {
+    background-color: whitesmoke;
+}
+.userItem:nth-child(even) {
+    background-color: white;
+}

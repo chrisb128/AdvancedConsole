@@ -17,6 +17,10 @@ class ApiService {
     return response.json();
   }
 
+  async getUsers() {
+    return this.callApi('{ users { id username lastLoginDate } }');
+  }
+
   async getMe() {
     return this.callApi('{ me { id username lastLoginDate } }');
   }

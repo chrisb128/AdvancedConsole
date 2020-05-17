@@ -1,19 +1,13 @@
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { Row, Col } from 'react-bootstrap';
 
-import { selectUserId, selectUserName, selectLastLoginDate } from './reducer';
-import { fetchCurrent } from './actions';
+import { selectUserId, selectUserName, selectLastLoginDate } from '../reducer';
 
-const MyUser = () => {
-    const dispatch = useDispatch();
+const User = () => {
     const userId = useSelector(selectUserId);
     const userName = useSelector(selectUserName);
     const lastLoginDate = useSelector(selectLastLoginDate);
-
-    useEffect(() => {
-        dispatch(fetchCurrent());
-    });
 
     return (
         <Row>
@@ -29,4 +23,4 @@ const MyUser = () => {
     );
 };
 
-export default MyUser;
+export default User;

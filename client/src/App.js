@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Container, Row, Col } from 'react-bootstrap';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import Login from './modules/login/Login';
 import Server from './modules/server/Server';
 import Header from './modules/header/Header';
-import MyUser from './modules/myUser/MyUser';
+import Users from './modules/users/Users';
 
 import './App.css';
-import { useSelector } from 'react-redux';
 import { selectAuthenticated } from './modules/login/reducer';
 
 
@@ -31,7 +31,9 @@ function App() {
               </Col>        
             </Row>
           </Route>
-          <Route path="/client/me">
+          <Route path="/client/users">
+            { authenticated 
+            ? null : <Redirect to="/client/login"/> }
             <Row>
               <Col>
                 <Header/>
@@ -39,7 +41,7 @@ function App() {
             </Row>
             <Row>
               <Col>
-                <MyUser/>
+                <Users/>
               </Col>
             </Row>
           </Route>

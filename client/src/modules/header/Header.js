@@ -19,7 +19,7 @@ const Header = () => {
             <Col className="ml-auto">
                 <span className={styles.userName}>{ userName }</span>
                 
-                <Link to="/client/me"><Icon.PeopleCircle className={styles.personIcon}/></Link>
+                <Link to="/client/users"><Icon.PeopleCircle className={styles.personIcon}/></Link>
             </Col>
         </Row>
     );

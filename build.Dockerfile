@@ -1,6 +1,6 @@
 FROM node:10-alpine
 
-RUN apk add --no-cache curl python make g++
+RUN apk add --no-cache curl python make g++ openssh-client
 
 WORKDIR /var/jenkins_home
 

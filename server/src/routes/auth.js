@@ -7,26 +7,6 @@ import User from '../models/user';
 
 export default app => {
   
-  if (!environment.prod) {
-    app.post('/server/api/auth/register', (req, response) => {
-      
-      const args = req.body;
-      User.create({
-        username: args.username
-      }).then(user => {
-        bcrypt.genSalt(10, (err, salt) => {
-          bcrypt.hash(args.password, salt, (err, hash) => {
-
-            if (err) throw err;
-            user.password = hash;
-            user.save()
-              .then(user => response.json(user));
-          });
-        });
-      });
-    });
-  }
-
   const signJwtToken = (userId, username, callback) => {
   
     const payload = {

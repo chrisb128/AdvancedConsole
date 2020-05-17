@@ -1,4 +1,5 @@
 import { GraphQLScalarType } from 'graphql'
+import bcrypt from 'bcryptjs';
 import Server from '../models/server';
 import User from '../models/user';
 import Event from '../models/event';
@@ -24,14 +25,17 @@ export default {
     me: (parent, args, context, info) => {
       return User.findById(context.user._id);
     },
+    user: (parent, args, context, info) => {
+      return User.findById(args.id);
+    },
+    users: (parent, args, context, info) => {
+      return User.find({});
+    },
     server: (parent, args, context, info) => {
       return Server.findById(args.id);
     },
     servers: (parent, args, context, info) => {
       return Server.find({}).sort({ lastReportTime: -1 });
-    },
-    users: (parent, args, context, info) => {
-      return User.find({});
     },
     events: (parent, args, context, info) => {
 
@@ -62,6 +66,27 @@ export default {
         });
 
         return user;
+      });
+    },
+    updateUserPassword: (parent, args, context, info) => {
+      return User.findById(context.user._id).then(user => {
+        return bcrypt.compare(args.oldPassword, user.password).then(isMatch => {
+
+          if (isMatch) {
+            return bcrypt.genSalt(10, (err, salt) => {
+              return bcrypt.hash(args.newPassword, salt, (err, hash) => {
+  
+                if (err) throw err;
+                user.password = hash;
+                user.save();
+                
+                return user;
+              });
+            });
+          } else {
+            return null;
+          }
+        });
       });
     },
     addServer: (parent, args, context, info) => {

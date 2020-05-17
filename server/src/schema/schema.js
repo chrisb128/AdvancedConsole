@@ -38,10 +38,11 @@ const schema = gql`
 
   type Query {
     me: User,
-    server(serverId: String): Server,
-    servers: [Server],
+    user(id: ID): User,
     users: [User],
-    events(serverId: String, offset: Int, limit: Int, filter: EventQueryFilter): [Event],
+    server(serverId: ID): Server,
+    servers: [Server],
+    events(serverId: ID, offset: Int, limit: Int, filter: EventQueryFilter): [Event],
   }
 
   input PlayerInput {
@@ -51,6 +52,7 @@ const schema = gql`
 
   type Mutation {
     addUser(username: String, password: String): User,
+    updateUserPassword(oldPassword: String, newPassword: String): User,
     addServer(name: String, host: String): Server,
     removeServer(serverId: ID): ID,
     updateServerStatus(serverId: ID, status: String, users: [PlayerInput]): Server,

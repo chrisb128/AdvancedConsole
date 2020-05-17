@@ -63,6 +63,12 @@ pipeline {
       }
     }
 
+    stage('Cleaning Up') {
+      steps {
+        sh 'docker system prune'
+      }
+    }
+
     stage('Deploy to Server') {
       steps {
         sh 'chmod u+x ./deploy.sh'

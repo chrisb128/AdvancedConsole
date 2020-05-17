@@ -16,7 +16,7 @@ const mongoOptions = {
   pass: process.env.DB_PASS
 };
 
-const dbHost = process.env.DB_HOST || 'localhost';
+const dbHost = process.env.DB_HOST;
 mongoose.connect(`mongodb://${dbHost}:27017/advanced-console?authSource=admin`, mongoOptions);
 mongoose.connection.once('open', () => {
   console.log('connected to db');

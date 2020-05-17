@@ -3,6 +3,8 @@ import { ApolloServer } from 'apollo-server-express';
 import mongoose from 'mongoose';
 import passport from 'passport';
 
+import environment from './environment';
+
 import typeDefs from './schema/schema';
 import resolvers from './schema/resolvers';
 import configurePassport from './passport';
@@ -26,6 +28,8 @@ mongoose.connection.once('open', () => {
 const apollo = new ApolloServer({
   typeDefs,
   resolvers,
+  introspection: !environment.prod,
+  playground: !environment.prod,
   context: ({req}) => {
     return { ip: req.ip, user: req.user };
   }

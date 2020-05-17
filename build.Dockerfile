@@ -1,4 +1,6 @@
-FROM node:10
+FROM node:10-alpine
+
+RUN apk add --no-cache python make g++
 
 WORKDIR /var/jenkins_home
 

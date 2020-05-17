@@ -1,37 +1,44 @@
 import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Row, Col } from 'react-bootstrap';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-import { selectUserId, selectUserName, selectLastLoginDate } from './reducer';
 import { fetchCurrent } from './actions';
 
 import List from './list/List';
+import User from './user/User';
+import Add from './add/Add';
 
-const MyUser = () => {
-    const dispatch = useDispatch();
-    const userId = useSelector(selectUserId);
-    const userName = useSelector(selectUserName);
-    const lastLoginDate = useSelector(selectLastLoginDate);
+const Users = () => {
+  const dispatch = useDispatch();
 
-    useEffect(() => {
-        dispatch(fetchCurrent());
-    }, [dispatch]);
+  useEffect(() => {
+      dispatch(fetchCurrent());
+  }, [dispatch]);
 
-    return (
-        <Row>
+  return (
+    <Router>
+      <Switch>
+        <Route from="/client/users/add">
+          <Row className={`justify-content-center`}>
             <Col xs={3}>
-                <List/>
+              <Add/>
             </Col>
-            <Col className={`text-left`}>
-                <p>ID: { userId }</p>
-                <p>User: { userName }</p>
-                <p>Last Login: { lastLoginDate }</p>
-                <p>
-                    Change Password:
-                </p>
+          </Row>
+        </Route>
+        <Route from="/client/users/">
+          <Row>
+            <Col xs={3}>
+              <List/>
             </Col>
-        </Row>
-    );
+            <Col>
+              <User/>
+            </Col>
+          </Row>
+        </Route>
+      </Switch>
+    </Router>
+  );
 };
 
-export default MyUser;
+export default Users;

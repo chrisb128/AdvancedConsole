@@ -6,7 +6,7 @@
 }
 
 .listItem:nth-child(even) {
-  background-color: lightgray;
+  background-color: whitesmoke;
 }
 
 .listItem:nth-child(odd) {
@@ -14,7 +14,7 @@
 }
 
 .listItem.selectedItem {
-  background-color: #333333;
+  background-color: #303030;
   color: white;
 }
 

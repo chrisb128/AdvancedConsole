@@ -1,10 +1,17 @@
-.userItem {
+.listItem {
     padding: 1em;
+    cursor: pointer
 }
 
-.userItem:nth-child(odd) {
+.listItem:nth-child(odd) {
     background-color: whitesmoke;
 }
-.userItem:nth-child(even) {
+
+.listItem:nth-child(even) {
     background-color: white;
 }
+
+.listItem.selectedItem {
+    background-color: #303030;
+    color: white;
+  }

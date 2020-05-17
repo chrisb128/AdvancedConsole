@@ -25,6 +25,10 @@ class ApiService {
     return this.callApi('{ me { id username lastLoginDate } }');
   }
 
+  async addUser(user) {
+    return this.callApi(`mutation { addUser(username:"${user.username}" password:"${user.password}") { id } }`);
+  }
+
   async getServers() {
     return this.callApi('{ servers { id name host status lastReportTime users { uuid username } } }');
   }

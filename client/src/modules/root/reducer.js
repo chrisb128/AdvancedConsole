@@ -4,9 +4,9 @@ import serverReducer from '../server/reducer';
 import usersReducer from '../users/reducer';
 
 const rootReducer = combineReducers({
-    login: loginReducer,
-    server: serverReducer,
-    users: usersReducer,
+  login: loginReducer,
+  server: serverReducer,
+  users: usersReducer,
 });
 
 export default rootReducer;

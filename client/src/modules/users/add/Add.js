@@ -12,7 +12,7 @@ const Add = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   
   function validateForm() {
-    return email.length > 0 && password.length > 0;
+    return email.length > 0 && password.length > 0 && password === confirmPassword;
   }
   
   function handleSubmit(event) {

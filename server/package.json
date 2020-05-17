@@ -4,6 +4,7 @@
   "description": "",
   "main": "src/server.js",
   "dependencies": {
+    "apollo-server-express": "^2.13.1",
     "bcryptjs": "^2.4.3",
     "express": "^4.17.1",
     "express-graphql": "^0.9.0",

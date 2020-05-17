@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-d
 import Login from './modules/login/Login';
 import Server from './modules/server/Server';
 import Header from './modules/header/Header';
-import MyUser from './modules/my-user/MyUser';
+import MyUser from './modules/myUser/MyUser';
 
 import './App.css';
 import { useSelector } from 'react-redux';

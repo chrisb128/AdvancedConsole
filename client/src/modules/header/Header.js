@@ -14,7 +14,7 @@ const Header = () => {
     return (
         <Row className={`${styles.header} justify-content-between`}>
             <Col>
-                
+                <Link to="/client"><Icon.House/></Link>
             </Col>
             <Col className="ml-auto">
                 <span className={styles.userName}>{ userName }</span>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import { Row, Col } from 'react-bootstrap';
 
 import Header from '../header/Header';
@@ -8,29 +8,30 @@ import Server from '../server/Server';
 
 const Home = () => {
   return (
-    <Router>
-      <Row>
-        <Col>
-          <Header/>
-        </Col>
-      </Row>
-      <Switch>
-        <Route path="/client/users">
-          <Row>
-            <Col>
-              <Users/>
-            </Col>
-          </Row>
-        </Route>
-        <Route path="/client">
-          <Row>
-            <Col>
-              <Server/> 
-            </Col>
-          </Row>
-        </Route>
-      </Switch>
-    </Router>
+    <Row>
+      <Col>
+        <Row>
+          <Col>
+            <Header/>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <Switch>
+              <Route path="/client/users">
+                <Users/>
+              </Route>
+              <Route path="/client/servers">
+                <Server/> 
+              </Route>
+              <Route exact path="/client">
+                <Redirect to="/client/servers"/>
+              </Route>
+            </Switch>
+          </Col>
+        </Row>
+      </Col>
+    </Row>
   );
 };
 

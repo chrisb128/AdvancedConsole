@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Row, Col } from 'react-bootstrap';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
 import { fetchCurrent } from './actions';
 
@@ -17,27 +17,25 @@ const Users = () => {
   }, [dispatch]);
 
   return (
-    <Router>
-      <Switch>
-        <Route from="/client/users/add">
-          <Row className={`justify-content-center`}>
-            <Col xs={3}>
-              <Add/>
-            </Col>
-          </Row>
-        </Route>
-        <Route from="/client/users/">
-          <Row>
-            <Col xs={3}>
-              <List/>
-            </Col>
-            <Col>
-              <User/>
-            </Col>
-          </Row>
-        </Route>
-      </Switch>
-    </Router>
+    <Switch>
+      <Route path="/client/users">
+        <Row>
+          <Col xs={3}>
+            <List/>
+          </Col>
+          <Col>
+            <User/>
+          </Col>
+        </Row>
+      </Route>
+      <Route path="/client/users/add">
+        <Row>
+          <Col xs={3}>
+            <Add/>
+          </Col>
+        </Row>
+      </Route>
+    </Switch>
   );
 };
 

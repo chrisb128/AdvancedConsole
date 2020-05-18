@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
+import { Form, Button } from 'react-bootstrap';
 
-import { login } from './actions';
+import { login } from '../actions';
 
 import styles from './Login.module.css';
-import { selectLoggingIn, selectLoginError } from './reducer';
+import { selectLoggingIn, selectLoginError } from '../reducer';
 
 const Login = () => {
     const dispatch = useDispatch();

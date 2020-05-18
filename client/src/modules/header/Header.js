@@ -4,8 +4,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Button, Row, Col } from 'react-bootstrap';
 import * as Icon from 'react-bootstrap-icons';
 
-import { logout } from '../login/actions';
-import { selectUserName } from '../login/reducer';
+import { logout } from '../auth/actions';
+import { selectUserName } from '../auth/reducer';
 
 import styles from './Header.module.css'; 
 
@@ -24,7 +24,7 @@ const Header = () => {
       <Col>
         <Row>
           <Col xs={1}>
-            <Link to="/client" className={styles.navIcon}><Icon.House/> Home</Link>
+            <Link to="/client"><Icon.House className={styles.navIcon}/> Home</Link>
           </Col>
           <Col xs={1}>        
             <Link to="/client/users"><Icon.PeopleCircle className={styles.navIcon}/> Users</Link>

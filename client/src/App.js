@@ -2,11 +2,11 @@ import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Container, Row, Col } from 'react-bootstrap';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
-import Login from './modules/login/Login';
+import Auth from './modules/auth/Auth';
 import Home from './modules/home/Home';
 
 import './App.css';
-import { selectAuthenticated } from './modules/login/reducer';
+import { selectAuthenticated } from './modules/auth/reducer';
 
 
 function App() {
@@ -19,25 +19,22 @@ function App() {
   return (
     <Router>
       <Container fluid className="App">
-        <Switch>
-          <Route path="/client/login">
-            { authenticated 
-            ? <Redirect to="/client"/> : null }
-            <Row>
-              <Col>
-                <Login/>
-              </Col>        
-            </Row>
-          </Route>
-          <Route path="/client">
-            { authenticated 
-                  ? null : <Redirect to="/client/login"/> }
-            <Home/>
-          </Route>
-          <Route path="/">
-            <Redirect to="/client"/>
-          </Route>
-        </Switch>
+        <Row>
+          <Col>
+              <Switch>
+                <Route path="/client/auth">
+                  <Auth/>
+                </Route>
+                <Route path="/client">
+                  { authenticated ? null : <Redirect to="/client/auth/login"/> }
+                  <Home/>
+                </Route>
+                <Route exact path="/">
+                  { authenticated ? <Redirect to="/client"/> : <Redirect to="/client/auth/login"/> }                  
+                </Route>
+              </Switch>
+          </Col>
+        </Row>
       </Container>
     </Router>
   );

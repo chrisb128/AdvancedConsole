@@ -1,13 +1,14 @@
 import { combineEpics } from 'redux-observable';
+import { push } from 'connected-react-router';
 import { filter, mergeMap } from 'rxjs/operators';
 import ApiService from '../../apiService';
 
 import { 
   fetchCurrent, setCurrentUser, fetchList, fetchListSuccess, 
-  addUser, addUserSuccess, updateUserPassword, updateUserPasswordSuccess 
+  addUser, addUserSuccess 
 } from './actions';
 
-const api = (state$) => new ApiService(state$.value.login.token);
+const api = (state$) => new ApiService(state$.value.auth.token);
 
 const fetchListEpic = (actions$, state$) => actions$.pipe(
   filter(action => action.type === fetchList().type),
@@ -28,17 +29,22 @@ const fetchCurrentEpic = (actions$, state$) => actions$.pipe(
 const addUserEpic = (actions$, state$) => actions$.pipe(
   filter(action => action.type === addUser().type),
   mergeMap(async action => {
-    await api(state$).addUser(action.user);
-    return addUserSuccess();
+    const { addUser } = await api(state$).addUser(action.user);
+    return addUserSuccess(addUser);
   })
 );
 
-const updateUserPasswordEpic = (actions$, state$) => actions$.pipe(
-  filter(action => action.type === updateUserPassword().type),
-  mergeMap(async action => {
-    await api(state$).updateUserPassword(action.oldPassword, action.newPassword);
-    return updateUserPasswordSuccess();
+const addUserSuccessEpic = (actions$, state$) => actions$.pipe(
+  filter(action => action.type === addUserSuccess().type),
+  mergeMap(action => {
+    push('/client/users');
+
+    return [
+      setCurrentUser(action.user),
+      fetchList()
+    ];
   })
 );
 
-export default combineEpics(fetchListEpic, fetchCurrentEpic, addUserEpic, updateUserPasswordEpic);
+
+export default combineEpics(fetchListEpic, fetchCurrentEpic, addUserEpic, addUserSuccessEpic);

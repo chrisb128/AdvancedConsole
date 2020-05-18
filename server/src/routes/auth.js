@@ -44,6 +44,8 @@ export default app => {
               user.save();
               
               return res.json({
+                userId: user._id,
+                username: user.username,
                 success: true,
                 token: token
               });

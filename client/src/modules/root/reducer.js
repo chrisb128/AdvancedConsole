@@ -1,10 +1,10 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import loginReducer from '../login/reducer';
+import authReducer from '../auth/reducer';
 import serverReducer from '../server/reducer';
 import usersReducer from '../users/reducer';
 
 const rootReducer = combineReducers({
-  login: loginReducer,
+  auth: authReducer,
   server: serverReducer,
   users: usersReducer,
 });

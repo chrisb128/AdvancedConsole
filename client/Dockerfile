@@ -12,7 +12,8 @@ RUN if [ "${USE_SSL}" -eq "0" ]; then echo "Include /usr/local/apache2/conf/apac
 
 RUN cat /usr/local/apache2/conf/httpd.conf | tail
 
-COPY ./build /usr/local/apache2/htdocs/client/
+RUN mkdir -p /var/www/
+COPY ./build /var/www/
 
 RUN mkdir -p /var/log/apache2/
 RUN mkdir -p /etc/ssl/

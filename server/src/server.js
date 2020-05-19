@@ -38,21 +38,26 @@ const apollo = new ApolloServer({
 const app = express();
 app.use(express.json());
 app.set('trust_proxy', true);
+
+configurePassport(passport);
 app.use(passport.initialize());
 
 app.use('/server/api/query', (req, res, next) => {
   passport.authenticate('jwt', { session: false }, (err, user, info) => {
     if (user) {
-      req.user = user
+      req.user = user;
+      next();
+    } else {
+      res.status(401).send({"error": err});
     }
 
-    next()
+    return;
+
   })(req, res, next)
 });
 
 apollo.applyMiddleware({ app, path: '/server/api/query' });
 
-configurePassport(passport);
 configureAuthRoutes(app);
 
 app.listen(3030, () => {

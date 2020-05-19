@@ -19,4 +19,4 @@ export default passport => {
         .catch(err => console.log(err));
     })
   );
-};;
+};

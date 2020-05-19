@@ -10,16 +10,14 @@ RUN if [ "${USE_SSL}" -eq "1" ]; then echo "Include /usr/local/apache2/conf/apac
 
 RUN if [ "${USE_SSL}" -eq "0" ]; then echo "Include /usr/local/apache2/conf/apache.conf" >> /usr/local/apache2/conf/httpd.conf; fi
 
-RUN cat /usr/local/apache2/conf/httpd.conf | tail
 
-RUN mkdir -p /var/www/
-RUN chown www-user:www-user /var/www
-RUN chmod 700 /var/www
+RUN mkdir -p /var/www/client/
+RUN chmod -R 755 /var/www
 
-COPY --chown=www-user:www-user ./build /var/www/
+COPY ./build /var/www/client/
 
 RUN mkdir -p /var/log/apache2/
-RUN mkdir -p /etc/ssl/
+RUN if [ "${USE_SSL}" -eq "1" ]; then mkdir -p /etc/ssl/; fi
 
 EXPOSE 80
 EXPOSE 443

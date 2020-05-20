@@ -1,7 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Button } from 'react-bootstrap';
+import * as Icon from 'react-bootstrap-icons';
 
 import { selectUserId as selectAuthUserId } from '../../auth/reducer';
 import { selectUserId, selectUserName, selectLastLoginDate } from '../reducer';
@@ -25,16 +26,18 @@ const User = () => {
         <Row>
           <Col>Last Login: { lastLoginDate }</Col>
         </Row>
-        {
-          (authUserId === userId)
-          ? (
-            <Row>
-              <Col>
-                <Link to="/client/auth/change-password">Change Password</Link>
-              </Col>
-            </Row>
-          ) : null
-        }
+        <Row>
+          <Col>
+          {
+            (authUserId === userId)
+            ? (
+              <Link to="/client/auth/change-password">Change Password</Link>
+            ) : (
+              <Button><Icon.Trash/> Delete User</Button>
+            )
+          }
+          </Col>
+        </Row>
       </Col>
     </Row>
   );

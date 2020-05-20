@@ -1,18 +1,26 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Row, Col, Button } from 'react-bootstrap';
 import * as Icon from 'react-bootstrap-icons';
 
+import { deleteUser } from '../actions';
 import { selectUserId as selectAuthUserId } from '../../auth/reducer';
 import { selectUserId, selectUserName, selectLastLoginDate } from '../reducer';
 
 const User = () => {
 
+  const dispatch = useDispatch();
+
   const authUserId = useSelector(selectAuthUserId);
+  
   const userId = useSelector(selectUserId);
   const userName = useSelector(selectUserName);
   const lastLoginDate = useSelector(selectLastLoginDate);
+
+  const onDeleteClicked = () => {
+    dispatch(deleteUser(userId));
+  };
 
   return (
     <Row>
@@ -33,7 +41,7 @@ const User = () => {
             ? (
               <Link to="/client/auth/change-password">Change Password</Link>
             ) : (
-              <Button><Icon.Trash/> Delete User</Button>
+              <Button onClick={() => onDeleteClicked()}><Icon.Trash/> Delete User</Button>
             )
           }
           </Col>

@@ -52,6 +52,7 @@ const schema = gql`
 
   type Mutation {
     addUser(username: String, password: String): User,
+    deleteUser(userId: ID): User,
     updateUserPassword(oldPassword: String, newPassword: String): User,
     addServer(name: String, host: String): Server,
     removeServer(serverId: ID): ID,

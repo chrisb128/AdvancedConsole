@@ -69,6 +69,13 @@ export default {
         return user;
       });
     },
+    deleteUser: (parent, args, context, info) => {      
+      if (args.userId === context.user._id) {
+        throw Error('Cannot delete self');
+      }
+
+      return User.findByIdAndDelete(args.userId);
+    },
     updateUserPassword: (parent, args, context, info) => {
       return User.findById(context.user._id).then(user => {
         return bcrypt.compare(args.oldPassword, user.password).then(isMatch => {

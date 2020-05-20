@@ -4,7 +4,7 @@ import ApiService from '../../apiService';
 
 import { 
   fetchCurrent, setCurrentUser, fetchList, fetchListSuccess, 
-  addUser, addUserSuccess 
+  addUser, addUserSuccess, deleteUser, deleteUserSuccess
 } from './actions';
 import history from '../../app/history';
 
@@ -46,4 +46,27 @@ const addUserSuccessEpic = (actions$, state$) => actions$.pipe(
   })
 );
 
-export default combineEpics(fetchListEpic, fetchCurrentEpic, addUserEpic, addUserSuccessEpic);
+const deleteUserEpic = (actions$, state$) => actions$.pipe(
+  filter(action => action.type === deleteUser().type),
+  mergeMap(async action => {
+    await api(state$).deleteUser(action.userId);
+    return deleteUserSuccess();
+  })
+);
+
+const deleteUserSuccessEpic = (actions$, state$) => actions$.pipe(
+  filter(action => action.type === deleteUserSuccess().type),
+  mergeMap(action => {
+    history.push('/client/users');
+
+    return [
+      fetchCurrent(),
+      fetchList()
+    ];
+  })
+)
+
+export default combineEpics(
+  fetchListEpic, fetchCurrentEpic, 
+  addUserEpic, addUserSuccessEpic, 
+  deleteUserEpic, deleteUserSuccessEpic);

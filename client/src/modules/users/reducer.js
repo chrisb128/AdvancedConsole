@@ -12,7 +12,8 @@ const initialState = {
 export default createReducer(initialState, {
     USERS_FETCH_LIST_SUCCESS: (state, action) => ({...state, users: action.users}),
     USERS_FETCH_CURRENT: (state, action) => state,
-    USERS_FETCH_CURRENT_SUCCESS: (state, action) => ({...state, user: { id: action.user.id, userName: action.user.username, lastLoginDate: action.user.lastLoginDate } })
+    USERS_FETCH_CURRENT_SUCCESS: (state, action) => ({...state, user: { id: action.user.id, userName: action.user.username, lastLoginDate: action.user.lastLoginDate } }),
+    USERS_DELETE: (state, action) => ({...state, users: state.users.filter(u => u.id !== action.userId )})
 });
 
 export const selectUserList = state => state.users.users;

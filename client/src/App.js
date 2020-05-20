@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Container, Row, Col } from 'react-bootstrap';
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import Auth from './modules/auth/Auth';
 import Home from './modules/home/Home';
 
 import './App.css';
 import { selectAuthenticated } from './modules/auth/reducer';
+
+import history from './app/history';
 
 
 function App() {
@@ -17,7 +19,7 @@ function App() {
   });
   
   return (
-    <Router>
+    <Router history={history}>
       <Container fluid className="App">
         <Row>
           <Col>

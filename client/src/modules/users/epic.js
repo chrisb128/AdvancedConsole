@@ -37,7 +37,7 @@ const addUserEpic = (actions$, state$) => actions$.pipe(
 const addUserSuccessEpic = (actions$, state$) => actions$.pipe(
   filter(action => action.type === addUserSuccess().type),
   mergeMap(action => {
-    push('/client/users');
+    history.push('/client/users');
 
     return [
       setCurrentUser(action.user),

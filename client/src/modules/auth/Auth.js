@@ -25,7 +25,7 @@ const Auth = () => {
           </Col>
         </Row>
         <Row>
-          <Col xs={6}>
+          <Col xs={3}>
             <ChangePassword/>
           </Col>
         </Row>

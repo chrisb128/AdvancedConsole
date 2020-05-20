@@ -56,17 +56,17 @@ export default {
       return User.create({
         username: args.username
       }).then(user => {
-        return bcrypt.genSalt(10, (err, salt) => {
-          return bcrypt.hash(args.password, salt, (err, hash) => {
+        bcrypt.genSalt(10, (err, salt) => {
+          bcrypt.hash(args.password, salt, (err, hash) => {
 
             if (err) throw err;
 
             user.password = hash;
             user.save();
-
-            return user;
           });
         });
+        
+        return user;
       });
     },
     updateUserPassword: (parent, args, context, info) => {

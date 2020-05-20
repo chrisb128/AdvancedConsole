@@ -18,6 +18,13 @@ const Users = () => {
 
   return (
     <Switch>
+      <Route path="/client/users/add">
+        <Row>
+          <Col xs={3}>
+            <Add/>
+          </Col>
+        </Row>
+      </Route>
       <Route path="/client/users">
         <Row>
           <Col xs={3}>
@@ -25,13 +32,6 @@ const Users = () => {
           </Col>
           <Col>
             <User/>
-          </Col>
-        </Row>
-      </Route>
-      <Route path="/client/users/add">
-        <Row>
-          <Col xs={3}>
-            <Add/>
           </Col>
         </Row>
       </Route>

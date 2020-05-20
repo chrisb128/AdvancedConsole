@@ -9,6 +9,9 @@ import {
   updatePassword, updatePasswordSuccess
 } from './actions';
 
+import history from '../../app/history';
+import { EMPTY } from 'rxjs';
+
 const auth = new AuthService();
 
 const loginEpic = (actions$, state$) => actions$.pipe(
@@ -33,4 +36,12 @@ const updatePasswordEpic = (actions$, state$) => actions$.pipe(
   })
 );
 
-export default combineEpics(loginEpic, updatePasswordEpic);
+const updatePasswordSuccessEpic = (actions$, state$) => actions$.pipe(
+  filter(action => action.type === updatePasswordSuccess().type),
+  mergeMap(() => {
+    history.push('/client/users');
+    return EMPTY;
+  })
+);
+
+export default combineEpics(loginEpic, updatePasswordEpic, updatePasswordSuccessEpic);

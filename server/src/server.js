@@ -1,4 +1,5 @@
 import express from 'express';
+import cookieParser from 'cookie-parser';
 import { ApolloServer } from 'apollo-server-express';
 import mongoose from 'mongoose';
 import passport from 'passport';
@@ -11,10 +12,10 @@ import configurePassport from './passport';
 import configureAuthRoutes from './routes/auth';
 
 
-const mongoOptions = { 
-  useNewUrlParser: true, 
-  useUnifiedTopology: true, 
-  user: process.env.DB_USER, 
+const mongoOptions = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  user: process.env.DB_USER,
   pass: process.env.DB_PASS
 };
 
@@ -30,7 +31,7 @@ const apollo = new ApolloServer({
   resolvers,
   introspection: !environment.prod,
   playground: !environment.prod,
-  context: ({req}) => {
+  context: ({ req }) => {
     return { ip: req.ip, user: req.user };
   }
 });
@@ -42,23 +43,32 @@ app.set('trust_proxy', true);
 configurePassport(passport);
 app.use(passport.initialize());
 
+app.use(cookieParser(process.env.JWT_SECRET));
+
+
 app.use('/server/api/query', (req, res, next) => {
+  
   passport.authenticate('jwt', { session: false }, (err, user, info) => {
-    if (user) {
-      req.user = user;
-      next();
-    } else {
-      res.status(401).send({"error": err});
+    
+    if (err) {
+      res.status(401).send({ "error": err });
+      return;
     }
 
+    if (user) {
+      req.user = user;
+      
+      next();
+    } else {
+      res.status(401).send({ "error": "User not found" });
+    }
     return;
-
-  })(req, res, next)
+  })(req, res, next);
 });
 
 apollo.applyMiddleware({ app, path: '/server/api/query' });
 
-configureAuthRoutes(app);
+configureAuthRoutes(app, passport);
 
 app.listen(3030, () => {
   console.log('Listening on port 3030');

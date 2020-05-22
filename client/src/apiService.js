@@ -1,19 +1,22 @@
+//import { Cookies } from 'react-cookie';
+
 class ApiService {
   constructor(token) {
     this.token = token;
   }
 
   async callApi(query) {
+      
     const response = await 
       fetch('/server/api/query?', { 
         method: 'POST', 
+        credentials: 'same-origin',
         headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + this.token
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({ query }) 
       });
-        
+
     return response.json();
   }
 

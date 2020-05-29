@@ -25,6 +25,7 @@ const Event = (props) => {
       case 12: return 'Chunk Unload';
       case 13: return 'Item Pickup';
       case 14: return 'Item Drop';
+      case 15: return 'Player Command';
     }
   }
 

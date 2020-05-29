@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import info.chrisb.advancedconsole.common.events.EventType;
+import org.bukkit.Bukkit;
 
 public class EventTrackerApi {
     private String _serverId;
@@ -50,7 +51,7 @@ public class EventTrackerApi {
     public String addServer(String name, String host) {
         if (!loginIfRequired()) return null;
 
-        String query = graphQueryParams(String.format("mutation { addServer(name:\"%s\" host:\"%s\") { _id } }", name, host));
+        String query = graphQueryParams(String.format("mutation { addServer(name:\"%s\" host:\"%s\") { id } }", name, host));
         String response = executePost(_apiUrl + "/api/query?", query);
 
         if (response == null) {
@@ -61,7 +62,7 @@ public class EventTrackerApi {
         _serverId = serverInfo
                 .get("data").getAsJsonObject()
                 .get("addServer").getAsJsonObject()
-                .get("_id").getAsString();
+                .get("id").getAsString();
 
         return _serverId;
     }
@@ -81,7 +82,7 @@ public class EventTrackerApi {
         }
         userList += "]";
 
-        String query = graphQueryParams(String.format("mutation { updateServerStatus(serverId:\"%s\" status:\"%s\" users:%s) { _id } }", _serverId, status, userList));
+        String query = graphQueryParams(String.format("mutation { updateServerStatus(serverId:\"%s\" status:\"%s\" users:%s) { id } }", _serverId, status, userList));
         String result = executePost(_apiUrl + "/api/query?", query);
 
         return result != null;
@@ -98,7 +99,7 @@ public class EventTrackerApi {
             playerInfo += "player:" + getPlayerInfo(player);
         }
 
-        String query = graphQueryParams(String.format("mutation { addEvent(serverId:\"%s\" eventType:%d message:\"%s\" %s) { _id } }", _serverId, type.ordinal(), escapedMessage, playerInfo));
+        String query = graphQueryParams(String.format("mutation { addEvent(serverId:\"%s\" eventType:%d message:\"%s\" %s) { id } }", _serverId, type.ordinal(), escapedMessage, playerInfo));
         String result = executePost(_apiUrl + "/api/query?", query);
 
         return result != null;
@@ -117,6 +118,8 @@ public class EventTrackerApi {
         HttpURLConnection connection = null;
         try {
             //Create connection
+            Bukkit.getLogger().info("POST " + targetURL);
+
             URL url = new URL(targetURL);
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
@@ -145,6 +148,9 @@ public class EventTrackerApi {
                 response.append('\r');
             }
             rd.close();
+
+            Bukkit.getLogger().info(response.toString());
+
             return response.toString();
         } catch (java.net.ConnectException ce) {
             return null;

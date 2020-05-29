@@ -15,5 +15,6 @@ public enum EventType {
     ChunkLoad,
     ChunkUnload,
     ItemPickup,
-    ItemDrop
+    ItemDrop,
+    PlayerCommand
 }

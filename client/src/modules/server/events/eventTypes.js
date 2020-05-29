@@ -12,4 +12,7 @@ export default [
   { key: 10, name: 'World Unload' },
   { key: 11, name: 'Chunk Load' },
   { key: 12, name: 'Chunk Unload' },
+  { key: 13, name: 'Item Pickup' },
+  { key: 14, name: 'Item Drop' },
+  { key: 15, name: 'Player Command' }
 ];

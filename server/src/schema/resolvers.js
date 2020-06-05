@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import Server from '../models/server';
 import User from '../models/user';
 import Event from '../models/event';
+import { generatePasswordHash } from '../services/auth';
 
 export default {
   Date: new GraphQLScalarType({
@@ -52,22 +53,15 @@ export default {
     },
   },
   Mutation: {
-    addUser: (parent, args, context, info) => {
-      return User.create({
+    addUser: async (parent, args, context, info) => {
+      const user = await User.create({
         username: args.username
-      }).then(user => {
-        bcrypt.genSalt(10, (err, salt) => {
-          bcrypt.hash(args.password, salt, (err, hash) => {
-
-            if (err) throw err;
-
-            user.password = hash;
-            user.save();
-          });
-        });
-        
-        return user;
       });
+
+      user.password = generatePasswordHash(args.password);
+      user.save();
+      
+      return user;
     },
     deleteUser: (parent, args, context, info) => {      
       if (args.userId === context.user._id) {

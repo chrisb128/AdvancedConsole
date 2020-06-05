@@ -10,9 +10,10 @@ class ApiService {
     const response = await 
       fetch('/server/api/query?', { 
         method: 'POST', 
-        credentials: 'same-origin',
+        credentials: 'omit',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + this.token
         },
         body: JSON.stringify({ query }) 
       });

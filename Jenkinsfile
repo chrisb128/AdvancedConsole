@@ -2,9 +2,8 @@ properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKe
 
 pipeline {
   agent { 
-    dockerfile {
-      filename 'build.Dockerfile'
-      dir '.'
+    docker {
+      image 'chrisb128/advanced-console_build-agent'
       args '--cpus=".5" --network="host" --env DEPLOY_ID_KEY_LOCATION="' + env.DEPLOY_ID_KEY_LOCATION + '" --env DEPLOY_HOST=' + env.DEPLOY_HOST + ' --env DOCKER_HOST=tcp://docker:2376  --env DOCKER_CERT_PATH=/certs/client  --env DOCKER_TLS_VERIFY=1 --volume /var/jenkins_home:/var/jenkins_home --volume /certs/client:/certs/client --volume /var/artifacts:/var/artifacts'
     }
   }

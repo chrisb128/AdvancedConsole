@@ -62,6 +62,7 @@ pipeline {
     stage('Cleaning Up') {
       steps {
         sh 'docker system prune -a'
+        sh 'docker volume prune'
       }
     }
 
@@ -89,6 +90,9 @@ pipeline {
           
           sh 'echo "Bringing up"'
           sh 'ssh ' + userName + '@' + env.DEPLOY_HOST + ' docker-compose -f docker/docker-compose.yml up -d'
+
+          sh 'echo "Cleaning up"'
+          sh 'ssh ' + userName + '@' + env.DEPLOY_HOST + ' docker system prune -a'
         }
       }
     }

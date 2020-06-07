@@ -1,8 +1,8 @@
 properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: ''))])
 
 def remote = [:]
-remote.name = ${env.DEPLOY_HOST}
-remote.host = ${env.DEPLOY_HOST}
+remote.name = env.DEPLOY_HOST
+remote.host = env.DEPLOY_HOST
 remote.allowAnyHosts = true
 
 withCredentials(bindings: [sshUserPrivateKey(credentialsId: 'adv-console-prod-ssh-key', keyFileVariable: 'identity', passphraseVariable: '', usernameVariable: 'userName')]) {
@@ -79,7 +79,7 @@ pipeline {
 
     steps {
         sh 'mkdir -p ~/.ssh'
-        sh 'ssh-keyscan -t rsa ' + ${env.DEPLOY_HOST} + ' >> ~/.ssh/known_hosts'
+        sh 'ssh-keyscan -t rsa ' + env.DEPLOY_HOST + ' >> ~/.ssh/known_hosts'
 
         sshPut remote: remote, from: './out/', into: '/tmp/advanced-console'
         sshCommand remote: remote, command: 'docker load -i /tmp/advanced-console/out/storage.zip'

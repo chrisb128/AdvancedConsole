@@ -72,20 +72,23 @@ pipeline {
           sh 'echo "Prefetching deploy host key"'
           sh 'mkdir -p ~/.ssh'
           sh 'ssh-keyscan -t rsa ' + env.DEPLOY_HOST + ' >> ~/.ssh/known_hosts'
+          
+          sh 'cp ' + identity + ' ~/.ssh/id_rsa'
+          sh 'chmod 0400 ~/.ssh/id_rsa'
 
           sh 'echo "Sending files to server"'
-          sh 'scp -Cr -i ' + identity + ' ./out/ ' + userName + '@' + env.DEPLOY_HOST + ':/tmp/advanced-console/'
+          sh 'scp -Cr ./out/ ' + userName + '@' + env.DEPLOY_HOST + ':/tmp/advanced-console/'
 
           sh 'echo "Loading images"'
-          sh 'ssh -i ' + identity + ' '+ userName + '@' + env.DEPLOY_HOST + ' docker load -i /tmp/advanced-console/out/storage.zip'
-          sh 'ssh -i ' + identity + ' '+ userName + '@' + env.DEPLOY_HOST + ' docker load -i /tmp/advanced-console/out/api.zip'
-          sh 'ssh -i ' + identity + ' '+ userName + '@' + env.DEPLOY_HOST + ' docker load -i /tmp/advanced-console/out/client.zip'
+          sh 'ssh ' + userName + '@' + env.DEPLOY_HOST + ' docker load -i /tmp/advanced-console/out/storage.zip'
+          sh 'ssh ' + userName + '@' + env.DEPLOY_HOST + ' docker load -i /tmp/advanced-console/out/api.zip'
+          sh 'ssh ' + userName + '@' + env.DEPLOY_HOST + ' docker load -i /tmp/advanced-console/out/client.zip'
           
           sh 'echo "Taking down"'
-          sh 'ssh -i ' + identity + ' '+ userName + '@' + env.DEPLOY_HOST + ' docker-compose -f docker/docker-compose.yml down'
+          sh 'ssh ' + userName + '@' + env.DEPLOY_HOST + ' docker-compose -f docker/docker-compose.yml down'
           
           sh 'echo "Bringing up"'
-          sh 'ssh -i ' + identity + ' '+ userName + '@' + env.DEPLOY_HOST + ' docker-compose -f docker/docker-compose.yml up -d'
+          sh 'ssh ' + userName + '@' + env.DEPLOY_HOST + ' docker-compose -f docker/docker-compose.yml up -d'
         }
       }
     }

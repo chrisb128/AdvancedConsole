@@ -62,26 +62,27 @@ pipeline {
       }
     }
 
-    withCredentials([sshUserPrivateKey(credentialsId: 'adv-console-prod-ssh-key', keyFileVariable: 'identity', passphraseVariable: '', usernameVariable: 'userName')]) {
-    
-      def remote = [:]
-      remote.name = ${env.DEPLOY_HOST}
-      remote.host = ${env.DEPLOY_HOST}
-      remote.user = userName
-      remote.identityFile = identity
-      remote.allowAnyHosts = true
-
       stage('Deploy to Server') {
         steps {
-          sh 'mkdir -p ~/.ssh'
-          sh 'ssh-keyscan -t rsa ' + ${env.DEPLOY_HOST} + ' >> ~/.ssh/known_hosts'
+          withCredentials([sshUserPrivateKey(credentialsId: 'adv-console-prod-ssh-key', keyFileVariable: 'identity', passphraseVariable: '', usernameVariable: 'userName')]) {
+          
+            def remote = [:]
+            remote.name = ${env.DEPLOY_HOST}
+            remote.host = ${env.DEPLOY_HOST}
+            remote.user = userName
+            remote.identityFile = identity
+            remote.allowAnyHosts = true
 
-          sshPut remote: remote, from: './out/', into: '/tmp/advanced-console';
-          sshCommand remote: remote, command: 'docker load -i /tmp/advanced-console/out/storage.zip'
-          sshCommand remote: remote, command: 'docker load -i /tmp/advanced-console/out/api.zip'
-          sshCommand remote: remote, command: 'docker load -i /tmp/advanced-console/out/client.zip'
-          sshCommand remote: remote, command: 'docker-compose -f docker/docker-compose.yml down'
-          sshCommand remote: remote, command: 'docker-compose -f docker/docker-compose.yml up -d'
+            sh 'mkdir -p ~/.ssh'
+            sh 'ssh-keyscan -t rsa ' + ${env.DEPLOY_HOST} + ' >> ~/.ssh/known_hosts'
+
+            sshPut remote: remote, from: './out/', into: '/tmp/advanced-console';
+            sshCommand remote: remote, command: 'docker load -i /tmp/advanced-console/out/storage.zip'
+            sshCommand remote: remote, command: 'docker load -i /tmp/advanced-console/out/api.zip'
+            sshCommand remote: remote, command: 'docker load -i /tmp/advanced-console/out/client.zip'
+            sshCommand remote: remote, command: 'docker-compose -f docker/docker-compose.yml down'
+            sshCommand remote: remote, command: 'docker-compose -f docker/docker-compose.yml up -d'
+          }
         }
       }
     }

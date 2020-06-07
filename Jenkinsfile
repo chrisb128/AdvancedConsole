@@ -1,9 +1,10 @@
 properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: ''))])
 
 pipeline {
-  agent any
+  agent any 
 
   stages {
+    
     stage('Init Report') {
       steps {
         sh 'id -u'
@@ -46,13 +47,15 @@ pipeline {
       }
     }
 
-    stage('Archive Images') {
+    stage('Build Archive Images') {
       steps {
+
         sh 'mkdir -p ./out'
         sh 'docker save --output ./out/storage.zip advanced-console_storage'
         sh 'docker save --output ./out/api.zip advanced-console_api'
         sh 'docker save --output ./out/client.zip advanced-console_client'
-        archiveArtifacts artifacts: 'out/*.zip', fingerprint: true
+        
+        archiveArtifacts artifacts: 'out/**/*.zip', fingerprint: true
       }
     }
 
@@ -62,27 +65,25 @@ pipeline {
       }
     }
 
+    withCredentials([sshUserPrivateKey(credentialsId: 'adv-console-prod-ssh-key', keyFileVariable: 'identity', usernameVariable: 'userName')]) {
       stage('Deploy to Server') {
         steps {
-          withCredentials([sshUserPrivateKey(credentialsId: 'adv-console-prod-ssh-key', keyFileVariable: 'identity', usernameVariable: 'userName')]) {
-          
-            def remote = [:]
-            remote.name = ${env.DEPLOY_HOST}
-            remote.host = ${env.DEPLOY_HOST}
-            remote.user = userName
-            remote.identityFile = identity
-            remote.allowAnyHosts = true
+          def remote = [:]
+          remote.name = ${env.DEPLOY_HOST}
+          remote.host = ${env.DEPLOY_HOST}
+          remote.user = userName
+          remote.identityFile = identity
+          remote.allowAnyHosts = true
 
-            sh 'mkdir -p ~/.ssh'
-            sh 'ssh-keyscan -t rsa ' + ${env.DEPLOY_HOST} + ' >> ~/.ssh/known_hosts'
+          sh 'mkdir -p ~/.ssh'
+          sh 'ssh-keyscan -t rsa ' + ${env.DEPLOY_HOST} + ' >> ~/.ssh/known_hosts'
 
-            sshPut remote: remote, from: './out/', into: '/tmp/advanced-console'
-            sshCommand remote: remote, command: 'docker load -i /tmp/advanced-console/out/storage.zip'
-            sshCommand remote: remote, command: 'docker load -i /tmp/advanced-console/out/api.zip'
-            sshCommand remote: remote, command: 'docker load -i /tmp/advanced-console/out/client.zip'
-            sshCommand remote: remote, command: 'docker-compose -f docker/docker-compose.yml down'
-            sshCommand remote: remote, command: 'docker-compose -f docker/docker-compose.yml up -d'
-          }
+          sshPut remote: remote, from: './out/', into: '/tmp/advanced-console'
+          sshCommand remote: remote, command: 'docker load -i /tmp/advanced-console/out/storage.zip'
+          sshCommand remote: remote, command: 'docker load -i /tmp/advanced-console/out/api.zip'
+          sshCommand remote: remote, command: 'docker load -i /tmp/advanced-console/out/client.zip'
+          sshCommand remote: remote, command: 'docker-compose -f docker/docker-compose.yml down'
+          sshCommand remote: remote, command: 'docker-compose -f docker/docker-compose.yml up -d'
         }
       }
     }

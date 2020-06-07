@@ -66,7 +66,7 @@ pipeline {
     }
 
     stage('Deploy to Server') {
-
+      when { branch 'master' }
       steps {
         withCredentials(bindings: [sshUserPrivateKey(credentialsId: 'adv-console-prod-ssh-key', keyFileVariable: 'identity', passphraseVariable: '', usernameVariable: 'userName')]) {
           sh 'echo "Prefetching deploy host key"'

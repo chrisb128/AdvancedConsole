@@ -64,7 +64,7 @@ pipeline {
 
     withCredentials([sshUserPrivateKey(credentialsId: 'adv-console-prod-ssh-key', keyFileVariable: 'identity', passphraseVariable: '', usernameVariable: 'userName')]) {
     
-      def remote [:]
+      def remote = [:]
       remote.name = ${env.DEPLOY_HOST}
       remote.host = ${env.DEPLOY_HOST}
       remote.user = userName

@@ -1,15 +1,5 @@
 properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: ''))])
 
-def remote = [:]
-remote.name = env.DEPLOY_HOST
-remote.host = env.DEPLOY_HOST
-remote.allowAnyHosts = true
-
-withCredentials(bindings: [sshUserPrivateKey(credentialsId: 'adv-console-prod-ssh-key', keyFileVariable: 'identity', passphraseVariable: '', usernameVariable: 'userName')]) {
-  remote.user = userName
-  remote.identityFile = identity
-}
-
 pipeline {
   agent any 
 
@@ -77,16 +67,18 @@ pipeline {
 
     stage('Deploy to Server') {
 
-    steps {
-        sh 'mkdir -p ~/.ssh'
-        sh 'ssh-keyscan -t rsa ' + env.DEPLOY_HOST + ' >> ~/.ssh/known_hosts'
+      steps {
+        withCredentials(bindings: [sshUserPrivateKey(credentialsId: 'adv-console-prod-ssh-key', keyFileVariable: 'identity', passphraseVariable: '', usernameVariable: 'userName')]) {
+          sh 'mkdir -p ~/.ssh'
+          sh 'ssh-keyscan -t rsa ' + env.DEPLOY_HOST + ' >> ~/.ssh/known_hosts'
 
-        sshPut remote: remote, from: './out/', into: '/tmp/advanced-console'
-        sshCommand remote: remote, command: 'docker load -i /tmp/advanced-console/out/storage.zip'
-        sshCommand remote: remote, command: 'docker load -i /tmp/advanced-console/out/api.zip'
-        sshCommand remote: remote, command: 'docker load -i /tmp/advanced-console/out/client.zip'
-        sshCommand remote: remote, command: 'docker-compose -f docker/docker-compose.yml down'
-        sshCommand remote: remote, command: 'docker-compose -f docker/docker-compose.yml up -d'
+          sshPut remote: [host: env.DEPLOY_HOST, allowAnyHosts: true, user: userName, identityFile: identity], from: './out/', into: '/tmp/advanced-console'
+          sshCommand remote: [host: env.DEPLOY_HOST, allowAnyHosts: true, user: userName, identityFile: identity], command: 'docker load -i /tmp/advanced-console/out/storage.zip'
+          sshCommand remote: [host: env.DEPLOY_HOST, allowAnyHosts: true, user: userName, identityFile: identity], command: 'docker load -i /tmp/advanced-console/out/api.zip'
+          sshCommand remote: [host: env.DEPLOY_HOST, allowAnyHosts: true, user: userName, identityFile: identity], command: 'docker load -i /tmp/advanced-console/out/client.zip'
+          sshCommand remote: [host: env.DEPLOY_HOST, allowAnyHosts: true, user: userName, identityFile: identity], command: 'docker-compose -f docker/docker-compose.yml down'
+          sshCommand remote: [host: env.DEPLOY_HOST, allowAnyHosts: true, user: userName, identityFile: identity], command: 'docker-compose -f docker/docker-compose.yml up -d'
+        }
       }
     }
   }

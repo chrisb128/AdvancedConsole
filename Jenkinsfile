@@ -65,9 +65,9 @@ pipeline {
       }
     }
 
-    withCredentials([sshUserPrivateKey(credentialsId: 'adv-console-prod-ssh-key', keyFileVariable: 'identity', usernameVariable: 'userName')]) {
-      stage('Deploy to Server') {
-        steps {
+    stage('Deploy to Server') {
+      steps {
+        withCredentials([sshUserPrivateKey(credentialsId: 'adv-console-prod-ssh-key', keyFileVariable: 'identity', usernameVariable: 'userName')]) {
           def remote = [:]
           remote.name = ${env.DEPLOY_HOST}
           remote.host = ${env.DEPLOY_HOST}

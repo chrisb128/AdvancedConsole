@@ -3,78 +3,79 @@ properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKe
 pipeline {
   agent any 
 
-  withCredentials([sshUserPrivateKey(credentialsId: 'adv-console-prod-ssh-key', keyFileVariable: 'identity', usernameVariable: 'userName')]) {
-    def remote = [:]
-    remote.name = ${env.DEPLOY_HOST}
-    remote.host = ${env.DEPLOY_HOST}
-    remote.user = userName
-    remote.identityFile = identity
-    remote.allowAnyHosts = true
+  stages {
     
-    stages {
-      
-      stage('Init Report') {
-        steps {
-          sh 'id -u'
-          sh 'id -g'
-          sh 'ls -al /var/artifacts'
+    stage('Init Report') {
+      steps {
+        sh 'id -u'
+        sh 'id -g'
+        sh 'ls -al /var/artifacts'
+      }
+    }
+
+    stage('Install Packages') {
+
+      steps {
+        dir(path: 'server') {
+          sh 'npm install'
+        }
+
+        dir(path: 'client') {
+          sh 'npm install'
         }
       }
+    }
 
-      stage('Install Packages') {
+    stage('Build') {
 
-        steps {
-          dir(path: 'server') {
-            sh 'npm install'
-          }
+      steps {
+        dir(path: 'server') {
+          sh 'npm run build'
+        }
 
-          dir(path: 'client') {
-            sh 'npm install'
-          }
+        dir(path: 'client') {
+          sh 'npm run build'
         }
       }
+    }
 
-      stage('Build') {
-
-        steps {
-          dir(path: 'server') {
-            sh 'npm run build'
-          }
-
-          dir(path: 'client') {
-            sh 'npm run build'
-          }
-        }
+    stage('Build Images') {      
+      steps {
+        sh 'docker build ./storage -t advanced-console_storage'
+        sh 'docker build ./server -t advanced-console_api'
+        sh 'docker build ./client -t advanced-console_client --build-arg USE_SSL="1"'
       }
+    }
 
-      stage('Build Images') {      
-        steps {
-          sh 'docker build ./storage -t advanced-console_storage'
-          sh 'docker build ./server -t advanced-console_api'
-          sh 'docker build ./client -t advanced-console_client --build-arg USE_SSL="1"'
-        }
+    stage('Build Archive Images') {
+      steps {
+
+        sh 'mkdir -p ./out'
+        sh 'docker save --output ./out/storage.zip advanced-console_storage'
+        sh 'docker save --output ./out/api.zip advanced-console_api'
+        sh 'docker save --output ./out/client.zip advanced-console_client'
+        
+        archiveArtifacts artifacts: 'out/**/*.zip', fingerprint: true
       }
+    }
 
-      stage('Build Archive Images') {
-        steps {
+    stage('Cleaning Up') {
+      steps {
+        sh 'docker system prune -a'
+      }
+    }
 
-          sh 'mkdir -p ./out'
-          sh 'docker save --output ./out/storage.zip advanced-console_storage'
-          sh 'docker save --output ./out/api.zip advanced-console_api'
-          sh 'docker save --output ./out/client.zip advanced-console_client'
+    stage('Deploy to Server') {
+      steps {
+        
+        withCredentials(bindings: [sshUserPrivateKey(credentialsId: 'adv-console-prod-ssh-key', keyFileVariable: 'identity', passphraseVariable: '', usernameVariable: 'userName')]) {
           
-          archiveArtifacts artifacts: 'out/**/*.zip', fingerprint: true
-        }
-      }
-
-      stage('Cleaning Up') {
-        steps {
-          sh 'docker system prune -a'
-        }
-      }
-
-      stage('Deploy to Server') {
-        steps {
+          def remote = [:]
+          remote.name = ${env.DEPLOY_HOST}
+          remote.host = ${env.DEPLOY_HOST}
+          remote.user = userName
+          remote.identityFile = identity
+          remote.allowAnyHosts = true
 
           sh 'mkdir -p ~/.ssh'
           sh 'ssh-keyscan -t rsa ' + ${env.DEPLOY_HOST} + ' >> ~/.ssh/known_hosts'

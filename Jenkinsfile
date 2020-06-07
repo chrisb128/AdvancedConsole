@@ -64,7 +64,7 @@ pipeline {
 
       stage('Deploy to Server') {
         steps {
-          withCredentials([sshUserPrivateKey(credentialsId: 'adv-console-prod-ssh-key', keyFileVariable: 'identity', passphraseVariable: '', usernameVariable: 'userName')]) {
+          withCredentials([sshUserPrivateKey(credentialsId: 'adv-console-prod-ssh-key', keyFileVariable: 'identity', usernameVariable: 'userName')]) {
           
             def remote = [:]
             remote.name = ${env.DEPLOY_HOST}
@@ -76,7 +76,7 @@ pipeline {
             sh 'mkdir -p ~/.ssh'
             sh 'ssh-keyscan -t rsa ' + ${env.DEPLOY_HOST} + ' >> ~/.ssh/known_hosts'
 
-            sshPut remote: remote, from: './out/', into: '/tmp/advanced-console';
+            sshPut remote: remote, from: './out/', into: '/tmp/advanced-console'
             sshCommand remote: remote, command: 'docker load -i /tmp/advanced-console/out/storage.zip'
             sshCommand remote: remote, command: 'docker load -i /tmp/advanced-console/out/api.zip'
             sshCommand remote: remote, command: 'docker load -i /tmp/advanced-console/out/client.zip'

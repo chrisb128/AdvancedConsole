@@ -1,5 +1,10 @@
 properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: ''))])
 
+def remote = [:]
+remote.name = ${env.DEPLOY_HOST}
+remote.host = ${env.DEPLOY_HOST}
+remote.allowAnyHosts = true
+
 pipeline {
   agent any 
 
@@ -66,16 +71,12 @@ pipeline {
     }
 
     stage('Deploy to Server') {
+
       steps {
-        
         withCredentials(bindings: [sshUserPrivateKey(credentialsId: 'adv-console-prod-ssh-key', keyFileVariable: 'identity', passphraseVariable: '', usernameVariable: 'userName')]) {
           
-          def remote = [:]
-          remote.name = ${env.DEPLOY_HOST}
-          remote.host = ${env.DEPLOY_HOST}
           remote.user = userName
           remote.identityFile = identity
-          remote.allowAnyHosts = true
 
           sh 'mkdir -p ~/.ssh'
           sh 'ssh-keyscan -t rsa ' + ${env.DEPLOY_HOST} + ' >> ~/.ssh/known_hosts'

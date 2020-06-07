@@ -47,7 +47,7 @@ pipeline {
       }
     }
 
-    stage('Build Archive Images') {
+    stage('Archive Images') {
       steps {
 
         sh 'mkdir -p ./out'
@@ -72,6 +72,8 @@ pipeline {
           sh 'echo "Prefetching deploy host key"'
           sh 'mkdir -p ~/.ssh'
           sh 'ssh-keyscan -t rsa ' + env.DEPLOY_HOST + ' >> ~/.ssh/known_hosts'
+
+          sh 'echo "' + identity + '\n' + userName + '" >> /var/docker/secrets/id_info.txt'
 
           sh 'echo "Sending files to server"'
           sh 'scp -Cr -i ' + identity + ' ./out/ ' + userName + '@' + env.DEPLOY_HOST + ':/tmp/advanced-console/'

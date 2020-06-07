@@ -1,8 +1,8 @@
 properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: ''))])
 
 pipeline {
-  agent { any }
-  
+  agent any
+
   stages {
     stage('Init Report') {
       steps {

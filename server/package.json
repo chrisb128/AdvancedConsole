@@ -13,6 +13,7 @@
     "graphql": "^14.6.0",
     "graphql-date": "^1.0.3",
     "jsonwebtoken": "^8.5.1",
+    "mocha-jenkins-reporter": "^0.4.3",
     "mongoose": "^5.9.6",
     "oauth2orize": "^1.11.0",
     "passport": "^0.4.1",
@@ -37,6 +38,7 @@
   },
   "scripts": {
     "test": "mocha --require @babel/register \"./{,!(node_modules)/**/}*.test.js\"",
+    "test-jenkins": "mocha --require @babel/register \"./{,!(node_modules)/**/}*.test.js\" --reporter mocha-jenkins-reporter",
     "build": "npx webpack",
     "build:debug": "npx webpack --watch --progress --mode=development"
   },

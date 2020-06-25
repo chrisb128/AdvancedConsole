@@ -42,7 +42,9 @@ pipeline {
     stage('Test') {
       steps {
         dir(path: 'server') {
-          sh 'npm run test'
+          sh 'npm run test-jenkins'
+
+          junit './report/tests.xml'
         }
       }
     }

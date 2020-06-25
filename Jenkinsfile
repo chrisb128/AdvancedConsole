@@ -105,11 +105,11 @@ pipeline {
         }
       }
     }
-
-    post {
-      always {
-        junit '**/report/tests.xml'
-      }
+  }
+  
+  post {
+    always {
+      junit '**/report/tests.xml'
     }
   }
 }

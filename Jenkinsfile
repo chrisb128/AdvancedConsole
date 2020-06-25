@@ -10,6 +10,7 @@ pipeline {
         sh 'id -u'
         sh 'id -g'
         sh 'ls -al /var/artifacts'
+        sh 'echo $JUNIT_REPORT_PATH'
       }
     }
 
@@ -43,8 +44,6 @@ pipeline {
       steps {
         dir(path: 'server') {
           sh 'npm run test-jenkins'
-
-          junit './report/tests.xml'
         }
       }
     }
@@ -104,6 +103,12 @@ pipeline {
           sh 'echo "Cleaning up"'
           sh 'ssh ' + userName + '@' + env.DEPLOY_HOST + ' docker system prune -af'
         }
+      }
+    }
+
+    post {
+      always {
+        junit '**/report/tests.xml'
       }
     }
   }

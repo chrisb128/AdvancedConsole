@@ -39,6 +39,14 @@ pipeline {
       }
     }
 
+    stage('Test') {
+      steps {
+        dir(path: 'server') {
+          sh 'npm run test'
+        }
+      }
+    }
+
     stage('Build Images') {      
       steps {
         sh 'docker build ./storage -t advanced-console_storage'

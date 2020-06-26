@@ -8,7 +8,7 @@ plugin/forge/build
 plugin/forge/out
 plugin/forge/run
 # Ignore Gradle build output directory
-build
+client/build
 dist
 db
 release

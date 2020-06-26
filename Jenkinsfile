@@ -14,60 +14,99 @@ pipeline {
     }
 
     stage('Install Packages') {
-
-      steps {
-        dir(path: 'server') {
-          sh 'npm install'
+      parallel {
+        stage('Server') {
+          steps {
+            dir(path: 'server') {
+              sh 'npm install'
+            }
+          }
         }
-
-        dir(path: 'client') {
-          sh 'npm install'
+        stage('Client') {
+          steps {
+            dir(path: 'client') {
+              sh 'npm install'
+            }
+          }
         }
       }
     }
 
     stage('Build') {
-
-      steps {
-        dir(path: 'server') {
-          sh 'npm run build'
+      parallel {
+        stage('Server') {
+          steps {
+            dir(path: 'server') {
+              sh 'npm run build'
+            }
+          }
         }
-
-        dir(path: 'client') {
-          sh 'npm run build'
+        stage('Client') {
+          steps {
+            dir(path: 'client') {
+              sh 'npm run build'
+            }
+          }
         }
       }
     }
 
     stage('Test') {
-      steps {
-        dir(path: 'server') {
-          sh 'npm run test-jenkins'
+      parallel {
+        stage('Server') {
+          steps {
+            dir(path: 'server') {
+              sh 'npm run test-jenkins'
+            }
+          }
         }
       }
     }
 
-    stage('Build Images') {      
-      steps {
-        sh 'docker build ./storage -t advanced-console_storage'
-        sh 'docker build ./server -t advanced-console_api'
-        sh 'docker build ./client -t advanced-console_client --build-arg USE_SSL="1"'
+    stage('Build Images') {
+      parallel {
+        stage('Server') {
+          steps {
+            sh 'docker build ./server -t advanced-console_api'
+          }
+        }
+        stage('Client') {      
+          steps {
+            sh 'docker build ./client -t advanced-console_client --build-arg USE_SSL="1"'
+          }
+        }
+        stage('Storage') {
+          steps {
+            sh 'docker build ./storage -t advanced-console_storage'
+          }
+        }
       }
     }
 
-    stage('Archive Images') {
-      steps {
-
-        sh 'mkdir -p ./out'
-        sh 'docker save --output ./out/storage.zip advanced-console_storage'
-        sh 'docker save --output ./out/api.zip advanced-console_api'
-        sh 'docker save --output ./out/client.zip advanced-console_client'
-        
-        archiveArtifacts artifacts: 'out/**/*.zip', fingerprint: true
+    stage('Save Images') {
+      parallel {
+        stage('Server') {
+          steps {
+            sh 'mkdir -p ./out'
+            sh 'docker save --output ./out/api.zip advanced-console_api'
+          }
+        }
+        stage('Client') {
+          steps {
+            sh 'mkdir -p ./out'
+            sh 'docker save --output ./out/client.zip advanced-console_client'
+          }
+        }
+        stage('Storage') {
+          steps {
+            sh 'mkdir -p ./out'
+            sh 'docker save --output ./out/storage.zip advanced-console_storage'
+          }
+        }
       }
     }
 
-    stage('Cleaning Up') {
+    stage('Clean Up') {
       steps {
         sh 'docker system prune -af'
         sh 'docker volume prune -f'
@@ -107,6 +146,9 @@ pipeline {
   }
   
   post {
+    success {
+      archiveArtifacts artifacts: 'out/**/*.zip', fingerprint: true
+    }
     always {
       junit '**/report/tests.xml'
     }

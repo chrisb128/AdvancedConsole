@@ -9,7 +9,6 @@ pipeline {
       steps {
         sh 'id -u'
         sh 'id -g'
-        sh 'ls -al /var/artifacts'
         sh 'echo $JUNIT_REPORT_PATH'
       }
     }

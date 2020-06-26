@@ -1,7 +1,7 @@
 properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: ''))])
 
 pipeline {
-  agent any 
+  agent { node { label 'ecs'} }
 
   stages {
     

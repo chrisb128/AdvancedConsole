@@ -7,6 +7,7 @@ pipeline {
     
     stage('Init Report') {
       steps {
+        sh 'docker info'
         sh 'id -u'
         sh 'id -g'
         sh 'echo $JUNIT_REPORT_PATH'

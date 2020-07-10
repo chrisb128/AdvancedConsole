@@ -10,7 +10,7 @@ pipeline {
         sh 'docker info'
         sh 'id -u'
         sh 'id -g'
-        sh 'echo $JUNIT_REPORT_PATH'
+        sh 'export JUNIT_REPORT_PATH=./report/tests.xml'
       }
     }
 

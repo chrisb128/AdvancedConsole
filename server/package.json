@@ -38,7 +38,7 @@
   },
   "scripts": {
     "test": "mocha --require @babel/register \"./{,!(node_modules)/**/}*.test.js\"",
-    "test-jenkins": "mocha --require @babel/register \"./{,!(node_modules)/**/}*.test.js\" --reporter mocha-jenkins-reporter",
+    "test-jenkins": "JUNIT_REPORT_PATH=./report/tests.xml mocha --require @babel/register \"./{,!(node_modules)/**/}*.test.js\" --reporter mocha-jenkins-reporter",
     "build": "npx webpack",
     "build:debug": "npx webpack --watch --progress --mode=development"
   },

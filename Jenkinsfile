@@ -122,6 +122,7 @@ pipeline {
           sh 'mkdir -p ~/.ssh'
           sh 'ssh-keyscan -t rsa ' + env.DEPLOY_HOST + ' >> ~/.ssh/known_hosts'
           
+          sh 'rm -f ~/.ssh/id_rsa'
           sh 'cp ' + identity + ' ~/.ssh/id_rsa'
           sh 'chmod 0400 ~/.ssh/id_rsa'
 
